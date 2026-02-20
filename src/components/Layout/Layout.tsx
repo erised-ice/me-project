@@ -1,7 +1,8 @@
 import {Header} from "./Header/Header.tsx";
+import type {ReactNode} from "react";
 
 type LayoutProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export const Layout = ({ children }: LayoutProps) => {

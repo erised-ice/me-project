@@ -1,4 +1,5 @@
-import {MainPage} from "../../../pages/MainPage.tsx";
+import { Link } from "react-router-dom";
+/*TODO: Создать компонент линк */
 
 export const Header = () => {
   return (
@@ -7,7 +8,9 @@ export const Header = () => {
       {/*
       Здесь будет навигация, логотип и тому подобное. Он будет одинаковый на всех страницах
       */}
-      <link href={MainPage}>Main page</link>
+      <Link to="/">Main page</Link>
+      <Link to="/recipes">Recipes</Link>
+      {/*TODO: Сделать так, чтобы подсвечивались нужные ссылки когда находимся на нужной странице */}
     </header>
   )
 }
