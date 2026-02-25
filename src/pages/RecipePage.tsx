@@ -1,26 +1,33 @@
-import {Layout} from "../components/Layout/Layout.tsx";
+import {Layout} from "../shared/components/Layout/Layout.tsx";
 import {useParams} from "react-router-dom";
+import {recipes} from "../shared/data/data.ts";
 
-export const RecipePage = () =>{
+export const RecipePage = () => {
   const recipeId = useParams().id;
+  const recipe = recipes.find(item => item.id === Number(recipeId));
 
   return (
     <Layout>
-      <h1>Блины {recipeId}</h1>
-      <ul>
-        <li>
-          1 стакан муки
-        </li>
-        <li>2 стакана молока</li>
-        <li>2 столовые ложки растительного масла (можно на глаз)</li>
-        <li>1 столовая ложка сахара (можно на глаз, и добавить еще, если блин не достаточно коричневый)</li>
-        <li>щепотка соли.</li>
-        <li>2 яйца</li>
-        {/*
+      {recipe ? (
+        <>
+          <h1>{recipe.name}</h1>
+          {recipe.ingredients && (
+            <ul>
+              {recipe.ingredients.map(item => (
+                <li key={item.id}>{item.text} {item.tip && `(${item.tip})`}</li>
+              ))}
+            </ul>
+          )}
+            {/*
         Заметки в скобках сделать как туллтипы
         */}
-      </ul>
-      Перемешать яйца, муку и стакан молока, сахар, соль и масло, затем добавить остальное молоко, и жарить на раскаленной почти сухой сковороде. Нужно совсем немного масла.
+          {recipe.description}
+        </>
+      ) : (
+        <>
+          "Кажется вы пытаетесь найти несуществующий рецепт"
+        </>
+      )}
     </Layout>
   )
 }
