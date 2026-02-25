@@ -8,8 +8,7 @@ function App() {
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/recipes" element={<RecipeBookPage />} />
-      <Route path="/recipes/pancakes" element={<RecipePage />} />
-
+      <Route path="/recipes/:id" element={<RecipePage />} />
       {/*
       Здесь будет роутер, который позволит переключаться между страницами.
       Какой красивый шрифт! Как будто реально на чертежной бумаге карандашом написано.

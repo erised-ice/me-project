@@ -1,5 +1,5 @@
 import {Layout} from "../components/Layout/Layout.tsx";
-import {Link} from "react-router-dom";
+import {Link} from "../components/shared/Link/Link.tsx";
 
 export const RecipeBookPage = () => {
   return (
@@ -7,7 +7,7 @@ export const RecipeBookPage = () => {
       <h1>Книга рецептов</h1>
       <ul>
         <li>
-          <Link to={`/recipes/pancakes`}>
+          <Link to={`/recipes/11`}>
             Блинчики
           </Link>
         </li>

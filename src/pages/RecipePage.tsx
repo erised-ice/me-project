@@ -1,9 +1,12 @@
 import {Layout} from "../components/Layout/Layout.tsx";
+import {useParams} from "react-router-dom";
 
 export const RecipePage = () =>{
+  const recipeId = useParams().id;
+
   return (
     <Layout>
-      <h1>Блины</h1>
+      <h1>Блины {recipeId}</h1>
       <ul>
         <li>
           1 стакан муки
