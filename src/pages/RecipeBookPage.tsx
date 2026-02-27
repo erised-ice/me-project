@@ -1,37 +1,42 @@
 import {Layout} from "../shared/components/Layout/Layout.tsx";
 import {Link} from "../shared/components/Link/Link.tsx";
 import {getRoute, ROUTE} from "../shared/constants/routes.ts";
-import {useState} from "react";
-import {recipes} from "../shared/data/data.ts";
+import {useEffect, useState} from "react";
+import {loadRecipes, saveRecipes} from "../shared/utils/storage.ts";
 
 export const RecipeBookPage = () => {
   const [recipeName, setRecipeName] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
-  const [newRecipes, setNewRecipes] = useState(recipes);
+  const [newRecipes, setNewRecipes] = useState(() => loadRecipes());
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const newRecipe = {
-      id: Date.now(),
+      id: Date.now(),/* TODO: Сделать более правильный вариант присвоения ID */
       name: recipeName,
       ingredients: ingredients.split("\n").map((line, index) => ({
         id: index,
-        name: line.trim(),
+        text: line.trim(),
         tip: null,
         }),),
       description: instructions
     };
-    setNewRecipes((prev) => [...prev, newRecipe]);/*TODO: поправить типы*/
+    setNewRecipes((prev) => [...prev, newRecipe]);/* TODO: поправить типы */
     setRecipeName("");
     setIngredients("");
     setInstructions("");
   }
 
+  useEffect(() => {
+    saveRecipes(newRecipes)
+  }, [newRecipes]);
+
   return (
     <Layout>
       <h1>Книга рецептов</h1>
       <h2>Добавить рецепт</h2>
+      {/* TODO: сделать возможность добавлять ингредиенты с подсказками */}
       <form onSubmit={handleSubmit}>
         <label>
           Название

@@ -1,10 +1,10 @@
 import {Layout} from "../shared/components/Layout/Layout.tsx";
 import {useParams} from "react-router-dom";
-import {recipes} from "../shared/data/data.ts";
+import {loadRecipes} from "../shared/utils/storage.ts";
 
 export const RecipePage = () => {
   const recipeId = useParams().id;
-  const recipe = recipes.find(item => item.id === Number(recipeId));
+  const recipe = loadRecipes().find(item => item.id === Number(recipeId));
 
   return (
     <Layout>
