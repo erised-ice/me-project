@@ -1,6 +1,8 @@
-export const getRoute = (route, id) => `${route}/${id}`;
+export const ROUTE = {
+  HOME: "/",
+  RECIPES: "/recipes",
+} as const;
 
-export enum ROUTE {
-  HOME = '/',
-  RECIPES = '/recipes',
-}
+type RouteValue = (typeof ROUTE)[keyof typeof ROUTE];
+
+export const getRoute = (route: RouteValue, id: number | string): string => `${route}/${id}`;

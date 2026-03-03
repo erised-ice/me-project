@@ -1,10 +1,12 @@
 import {Layout} from "../shared/components/Layout/Layout.tsx";
 import {useParams} from "react-router-dom";
-import {loadRecipes} from "../shared/utils/storage.ts";
+import {useAppSelector} from "../shared/hooks/redux.tsx";
+import {selectRecipes} from "../features/recipes/selectors.ts";
 
 export const RecipePage = () => {
   const recipeId = useParams().id;
-  const recipe = loadRecipes().find(item => item.id === Number(recipeId));
+  const recipes = useAppSelector(selectRecipes);
+  const recipe = recipes.find(item => item.id === Number(recipeId));
 
   return (
     <Layout>

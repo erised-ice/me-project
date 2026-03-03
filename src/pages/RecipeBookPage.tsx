@@ -1,16 +1,19 @@
 import {Layout} from "../shared/components/Layout/Layout.tsx";
 import {Link} from "../shared/components/Link/Link.tsx";
 import {getRoute, ROUTE} from "../shared/constants/routes.ts";
-import {useEffect, useState} from "react";
-import {loadRecipes, saveRecipes} from "../shared/utils/storage.ts";
+import {type SyntheticEvent, useState} from "react";
+import {useAppDispatch, useAppSelector} from "../shared/hooks/redux.tsx";
+import {selectRecipes} from "../features/recipes/selectors.ts";
+import {addRecipe} from "../features/recipes/recipesSlice.ts";
 
 export const RecipeBookPage = () => {
+  const dispatch = useAppDispatch();
   const [recipeName, setRecipeName] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
-  const [newRecipes, setNewRecipes] = useState(() => loadRecipes());
+  const recipes = useAppSelector(selectRecipes);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     event.preventDefault();
     const newRecipe = {
       id: Date.now(),/* TODO: Сделать более правильный вариант присвоения ID */
@@ -22,15 +25,11 @@ export const RecipeBookPage = () => {
         }),),
       description: instructions
     };
-    setNewRecipes((prev) => [...prev, newRecipe]);/* TODO: поправить типы */
+    dispatch(addRecipe(newRecipe));
     setRecipeName("");
     setIngredients("");
     setInstructions("");
   }
-
-  useEffect(() => {
-    saveRecipes(newRecipes)
-  }, [newRecipes]);
 
   return (
     <Layout>
@@ -54,8 +53,8 @@ export const RecipeBookPage = () => {
       </form>
       <ul>
         {
-          newRecipes.map(item => (
-            <li>
+          recipes.map(item => (
+            <li key={item.id}>
               <Link to={getRoute(ROUTE.RECIPES, item.id)}>
                 {item.name}
               </Link>
