@@ -1,6 +1,6 @@
 import type { recipe } from "./types.ts";
 
-const API_URL = "http://localhost:3001/recipes";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export type CreateRecipePayload = Omit<recipe, "id">;
 
