@@ -1,10 +1,7 @@
 import {Router} from "express";
+import {readRecipes, writeRecipes} from "../utils/recipesFile";
 
 export const recipesRouter = Router();
-
-const recipes = [
-  { id: 1, name: "Блины", ingredients: [], description: "..." }
-];
 
 const isValidIngredient = (value: unknown): boolean => {
   if (typeof value !== "object" || value === null) return false;
@@ -18,11 +15,12 @@ const isValidIngredient = (value: unknown): boolean => {
   );
 };
 
-recipesRouter.get("/", (_req, res) => {
+recipesRouter.get("/", async (_req, res) => {
+  const recipes = await readRecipes();
   res.json(recipes);
 });
 
-recipesRouter.post("/", (req, res) => {
+recipesRouter.post("/", async (req, res) => {
   const { name, ingredients, description } = req.body;
 
   if (
@@ -44,7 +42,9 @@ recipesRouter.post("/", (req, res) => {
     description: description.trim()
   };
 
+  const recipes = await readRecipes();
   recipes.push(newRecipe);
+  await writeRecipes(recipes);
 
   return res.status(201).json(newRecipe);
 });
