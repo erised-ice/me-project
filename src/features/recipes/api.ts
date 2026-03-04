@@ -1,8 +1,15 @@
-import type {recipe} from "./types.ts";
+import type { recipe } from "./types.ts";
 
-const API_URL = 'http://localhost:3001/recipes';
+const API_URL = "http://localhost:3001/recipes";
 
-export type CreateRecipePayload = Omit<recipe, "id">
+export type CreateRecipePayload = Omit<recipe, "id">;
+
+type ApiRecipe = Omit<recipe, "id"> & { id: number | string };
+
+const normalizeRecipe = (item: ApiRecipe): recipe => ({
+  ...item,
+  id: Number(item.id),
+});
 
 export const getRecipesApi = async (): Promise<recipe[]> => {
   const response = await fetch(API_URL);
@@ -11,11 +18,12 @@ export const getRecipesApi = async (): Promise<recipe[]> => {
     throw new Error("Failed to fetch recipes");
   }
 
-  return await response.json() as recipe[];
-}
+  const data = (await response.json()) as ApiRecipe[];
+  return data.map(normalizeRecipe);
+};
 
 export const createRecipeApi = async (
-  payload: CreateRecipePayload,
+  payload: CreateRecipePayload
 ): Promise<recipe> => {
   const response = await fetch(API_URL, {
     method: "POST",
@@ -27,6 +35,6 @@ export const createRecipeApi = async (
     throw new Error("Failed to create recipe");
   }
 
-  return await response.json() as recipe;
-}
-
+  const data = (await response.json()) as ApiRecipe;
+  return normalizeRecipe(data);
+};

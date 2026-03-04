@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {readRecipes, writeRecipes} from "../utils/recipesFile";
+import {pool} from "../db";
 
 export const recipesRouter = Router();
 
@@ -16,8 +16,10 @@ const isValidIngredient = (value: unknown): boolean => {
 };
 
 recipesRouter.get("/", async (_req, res) => {
-  const recipes = await readRecipes();
-  res.json(recipes);
+  const result = await pool.query(
+    "SELECT id, name, ingredients, description FROM recipes ORDER BY id ASC"
+  );
+  res.json(result.rows);
 });
 
 recipesRouter.post("/", async (req, res) => {
@@ -35,16 +37,14 @@ recipesRouter.post("/", async (req, res) => {
     });
   }
 
-  const newRecipe = {
-    id: Date.now(),
-    name: name.trim(),
-    ingredients,
-    description: description.trim()
-  };
+  const id = Date.now();
 
-  const recipes = await readRecipes();
-  recipes.push(newRecipe);
-  await writeRecipes(recipes);
+  const result = await pool.query(
+    `INSERT INTO recipes (id, name, ingredients, description)
+   VALUES ($1, $2, $3::jsonb, $4)
+   RETURNING id, name, ingredients, description`,
+    [id, name.trim(), JSON.stringify(ingredients), description.trim()]
+  );
 
-  return res.status(201).json(newRecipe);
+  return res.status(201).json(result.rows[0]);
 });
