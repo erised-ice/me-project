@@ -1,10 +1,10 @@
 import {Layout} from "../shared/components/Layout/Layout.tsx";
 import {Link} from "../shared/components/Link/Link.tsx";
 import {getRoute, ROUTE} from "../shared/constants/routes.ts";
-import {type SyntheticEvent, useState} from "react";
+import {type SyntheticEvent, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../shared/hooks/redux.tsx";
 import {selectRecipes} from "../features/recipes/selectors.ts";
-import {addRecipe} from "../features/recipes/recipesSlice.ts";
+import {createRecipe, fetchRecipes} from "../features/recipes/thunks.ts";
 
 export const RecipeBookPage = () => {
   const dispatch = useAppDispatch();
@@ -16,7 +16,6 @@ export const RecipeBookPage = () => {
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     event.preventDefault();
     const newRecipe = {
-      id: Date.now(),/* TODO: Сделать более правильный вариант присвоения ID */
       name: recipeName,
       ingredients: ingredients.split("\n").map((line, index) => ({
         id: index,
@@ -25,11 +24,15 @@ export const RecipeBookPage = () => {
         }),),
       description: instructions
     };
-    dispatch(addRecipe(newRecipe));
+    dispatch(createRecipe(newRecipe));
     setRecipeName("");
     setIngredients("");
     setInstructions("");
   }
+
+  useEffect(() => {
+    dispatch(fetchRecipes());
+  }, [dispatch]);
 
   return (
     <Layout>
