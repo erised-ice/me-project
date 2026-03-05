@@ -3,9 +3,14 @@ import {Link} from "../shared/components/Link/Link.tsx";
 import {getRoute, ROUTE} from "../shared/constants/routes.ts";
 import {type SyntheticEvent, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../shared/hooks/redux.tsx";
-import {selectRecipes} from "../features/recipes/selectors.ts";
+import {
+  selectCreateRecipeLoadingStatus,
+  selectFetchRecipesLoadingStatus,
+  selectRecipes
+} from "../features/recipes/selectors.ts";
 import {createRecipe, fetchRecipes} from "../features/recipes/thunks.ts";
-import { Title, List, Paper, Stack, TextInput, Textarea, Button} from "@mantine/core";
+import {Title, List, Paper, Stack, TextInput, Textarea, Button, Center, Loader, Alert} from "@mantine/core";
+import {LoadingStatus} from "../shared/constants/constants.ts";
 
 export const RecipeBookPage = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +19,8 @@ export const RecipeBookPage = () => {
   const [instructions, setInstructions] = useState("");
   const [author, setAuthor] = useState("");
   const recipes = useAppSelector(selectRecipes);
+  const fetchRecipesLoadingStatus = useAppSelector(selectFetchRecipesLoadingStatus);
+  const createRecipeLoadingStatus = useAppSelector(selectCreateRecipeLoadingStatus);
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     event.preventDefault();
@@ -72,27 +79,56 @@ export const RecipeBookPage = () => {
                          value={author}
                          onChange={(e) => setAuthor(e.currentTarget.value)}
             />
-            <Button color="cyan" type="submit" >Добавить</Button>
+            <Button color="cyan" type="submit" loading={createRecipeLoadingStatus === LoadingStatus.LOADING}>
+              Добавить
+            </Button>
+            {createRecipeLoadingStatus === LoadingStatus.LOADED && (
+              <Alert color="green" title="Готово">
+                Рецепт успешно добавлен.
+              </Alert>
+            )}
+              {createRecipeLoadingStatus === LoadingStatus.ERROR && (
+                <Alert color="red" title="Ошибка">
+                  Не удалось сохранить рецепт. Попробуйте ещё раз.
+                </Alert>
+              )}
             </Stack>
           </form>
       </Paper>
       {/* TODO: сделать возможность добавлять ингредиенты с подсказками */}
-      <List
-        listStyleType="none"
-        spacing="sm"
-        withPadding
-        fz="lg"
-      >
-        {
-          recipes.map(item => (
-            <li key={item.id}>
-              <Link to={getRoute(ROUTE.RECIPES, item.id)}>
-                {item.name}
-              </Link>
-            </li>
-          ))
-        }
-      </List>
+      {(fetchRecipesLoadingStatus === LoadingStatus.INITIAL || fetchRecipesLoadingStatus === LoadingStatus.LOADING) && (
+          <Center py="xl">
+            <Loader color="cyan"/>
+          </Center>
+      )}
+      {fetchRecipesLoadingStatus === LoadingStatus.ERROR && (
+        <>
+          Произошла ошибка загрузки, попробуйте перезагрузить страницу
+        </>
+      )}
+      {fetchRecipesLoadingStatus === LoadingStatus.LOADED && (
+        <List
+          listStyleType="none"
+          spacing="sm"
+          withPadding
+          fz="lg"
+        >
+          {
+            recipes.map(item => (
+              <li key={item.id}>
+                <Link to={getRoute(ROUTE.RECIPES, item.id)}>
+                  {item.name}
+                </Link>
+              </li>
+            ))
+          }
+          <li>
+            <Link to={getRoute(ROUTE.RECIPES, 100)}>
+              Тестовый пустой рецепт
+            </Link>
+          </li>
+        </List>
+      )}
     </Layout>
   )
 }
