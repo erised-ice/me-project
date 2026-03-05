@@ -1,6 +1,5 @@
 import {Header} from "./components/Header/Header.tsx";
 import type {ReactNode} from "react";
-import styles from "./Layout.module.scss";
 import {AppShell, Container} from "@mantine/core";
 
 type LayoutProps = {

@@ -11,7 +11,7 @@ type LinkProps = {
 
 export const Link = ({ children, to, isText }: LinkProps) => {
   return (
-    <ReactLink to={to} className={cx(styles.link, isText && styles.text)} to={to} >
+    <ReactLink className={cx(styles.link, isText && styles.text)} to={to} >
       {children}
     </ReactLink>
   )
