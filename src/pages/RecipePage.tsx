@@ -50,6 +50,11 @@ export const RecipePage = () => {
             <Text size="lg" lh={1.6} c="cyan.9">
               {recipe.description}
             </Text>
+            {recipe.author && (
+              <Text size="sm" c="dimmed" mb="md">
+                Добавил(а): {recipe.author}
+              </Text>
+            )}
           </div>
         </>
       ) : (

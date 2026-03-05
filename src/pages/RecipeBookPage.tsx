@@ -53,9 +53,10 @@ export const RecipeBookPage = () => {
             <Textarea
               label="Ингредиенты"
               description="Каждый ингредиент с новой строки"
-              minRows={4}
+              minRows={6}
               value={ingredients}
               onChange={(e) => setIngredients(e.currentTarget.value)}
+              resize="vertical"
               required
             />
             <Textarea
@@ -64,6 +65,7 @@ export const RecipeBookPage = () => {
               value={instructions}
               onChange={(e) => setInstructions(e.currentTarget.value)}
               required
+              resize="vertical"
             />
             <TextInput label="Ваше имя"
                        description="Представьтесь, пожалуйста =)"
