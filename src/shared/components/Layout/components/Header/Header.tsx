@@ -12,7 +12,7 @@ export const Header = () => {
       <Container size="lg" px="md" h="100%">
         <Group h="100%">
           <Button variant="filled" color="cyan" size="lg" radius="md">
-            <Link to={ROUTE.HOME}>Главная страница</Link>
+            <Link to={ROUTE.HOME}>Главная</Link>
           </Button>
           <Button variant="filled" color="cyan" size="lg" radius="md">
             <Link to={ROUTE.RECIPES}>Рецепты</Link>
