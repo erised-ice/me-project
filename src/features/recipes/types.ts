@@ -3,6 +3,7 @@ export type recipe = {
   name: string,
   ingredients: ingredient[],
   description: string,
+  author: string | null,
 }
 
 export type ingredient = {

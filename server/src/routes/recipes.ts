@@ -17,20 +17,21 @@ const isValidIngredient = (value: unknown): boolean => {
 
 recipesRouter.get("/", async (_req, res) => {
   const result = await pool.query(
-    "SELECT id, name, ingredients, description FROM recipes ORDER BY id ASC"
+    "SELECT id, name, ingredients, description, author FROM recipes ORDER BY id ASC"
   );
   res.json(result.rows);
 });
 
 recipesRouter.post("/", async (req, res) => {
-  const { name, ingredients, description } = req.body;
+  const { name, ingredients, description, author } = req.body;
 
   if (
     typeof name !== "string" ||
     name.trim().length === 0 ||
     !Array.isArray(ingredients) ||
     !ingredients.every(isValidIngredient) ||
-    typeof description !== "string"
+    typeof description !== "string" ||
+    (author !== undefined && author !== null && typeof author !== "string")
   ) {
     return res.status(400).json({
       message: "Invalid recipe payload"
@@ -38,12 +39,14 @@ recipesRouter.post("/", async (req, res) => {
   }
 
   const id = Date.now();
+  const normalizedAuthor =
+    typeof author === "string" && author.trim().length > 0 ? author.trim() : null;
 
   const result = await pool.query(
-    `INSERT INTO recipes (id, name, ingredients, description)
-   VALUES ($1, $2, $3::jsonb, $4)
-   RETURNING id, name, ingredients, description`,
-    [id, name.trim(), JSON.stringify(ingredients), description.trim()]
+    `INSERT INTO recipes (id, name, ingredients, description, author)
+   VALUES ($1, $2, $3::jsonb, $4, $5)
+   RETURNING id, name, ingredients, description, author`,
+    [id, name.trim(), JSON.stringify(ingredients), description.trim(), normalizedAuthor]
   );
 
   return res.status(201).json(result.rows[0]);

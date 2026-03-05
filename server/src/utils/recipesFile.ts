@@ -12,6 +12,7 @@ export type Recipe = {
   name: string;
   ingredients: Ingredient[];
   description: string;
+  author: string;
 };
 
 const RECIPES_FILE_PATH = resolve(process.cwd(), "src/data/recipes.json");

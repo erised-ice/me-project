@@ -12,6 +12,7 @@ export const RecipeBookPage = () => {
   const [recipeName, setRecipeName] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
+  const [author, setAuthor] = useState("");
   const recipes = useAppSelector(selectRecipes);
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
@@ -23,12 +24,14 @@ export const RecipeBookPage = () => {
         text: line.trim(),
         tip: null,
         }),),
-      description: instructions
+      description: instructions,
+      author: author,
     };
     dispatch(createRecipe(newRecipe));
     setRecipeName("");
     setIngredients("");
     setInstructions("");
+    setAuthor("");
   }
 
   useEffect(() => {
@@ -55,7 +58,6 @@ export const RecipeBookPage = () => {
               onChange={(e) => setIngredients(e.currentTarget.value)}
               required
             />
-
             <Textarea
               label="Инструкции"
               minRows={5}
@@ -63,12 +65,15 @@ export const RecipeBookPage = () => {
               onChange={(e) => setInstructions(e.currentTarget.value)}
               required
             />
-
-            <Button type="submit" >Добавить</Button>
+            <TextInput label="Ваше имя"
+                       description="Представьтесь, пожалуйста =)"
+                         value={author}
+                         onChange={(e) => setAuthor(e.currentTarget.value)}
+            />
+            <Button color="cyan" type="submit" >Добавить</Button>
             </Stack>
           </form>
       </Paper>
-
       {/* TODO: сделать возможность добавлять ингредиенты с подсказками */}
       <List
         listStyleType="none"
