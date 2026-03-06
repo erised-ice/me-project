@@ -1,14 +1,14 @@
-import {Header} from "./components/Header/Header.tsx";
-import type {ReactNode} from "react";
-import {AppShell, Container} from "@mantine/core";
+import { Header } from './components/Header/Header.tsx';
+import type { ReactNode } from 'react';
+import { AppShell, Container } from '@mantine/core';
 
 type LayoutProps = {
   children?: ReactNode;
-}
+};
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
-    <AppShell header={{ height: "80px" }} padding="md">
+    <AppShell header={{ height: '80px' }} padding="md">
       <Header />
       <AppShell.Main>
         <Container size="lg" px="md">
@@ -16,5 +16,5 @@ export const Layout = ({ children }: LayoutProps) => {
         </Container>
       </AppShell.Main>
     </AppShell>
-  )
-}
+  );
+};

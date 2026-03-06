@@ -1,6 +1,6 @@
 export const ROUTE = {
-  HOME: "/",
-  RECIPES: "/recipes",
+  HOME: '/',
+  RECIPES: '/recipes',
 } as const;
 
 type RouteValue = (typeof ROUTE)[keyof typeof ROUTE];

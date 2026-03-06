@@ -1,10 +1,10 @@
-import {Link} from "../../../Link/Link.tsx";
-import {ROUTE} from "../../../../constants/routes.ts";
-import {AppShell, Button, Container, Group} from "@mantine/core";
+import { Link } from '../../../Link/Link.tsx';
+import { ROUTE } from '../../../../constants/routes.ts';
+import { AppShell, Button, Container, Group } from '@mantine/core';
 
 /*TODO: добавить алиасы чтобы писать сокращенные пути (а может и не надо)*/
 export const Header = () => {
-  return(
+  return (
     <AppShell.Header>
       {/*
       Здесь будет навигация, логотип и тому подобное. Он будет одинаковый на всех страницах
@@ -21,5 +21,5 @@ export const Header = () => {
       </Container>
       {/*TODO: Сделать так, чтобы подсвечивались нужные ссылки когда находимся на нужной странице */}
     </AppShell.Header>
-  )
-}
+  );
+};

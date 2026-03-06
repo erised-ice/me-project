@@ -1,19 +1,19 @@
-import {createSlice} from "@reduxjs/toolkit";
-import type {recipe} from "./types.ts";
-import {LoadingStatus, type LoadingStatusType} from "../../shared/constants/constants.ts";
-import {createRecipe, fetchRecipes} from "./thunks.ts";
+import { createSlice } from '@reduxjs/toolkit';
+import type { recipe } from './types.ts';
+import { LoadingStatus, type LoadingStatusType } from '../../shared/constants/constants.ts';
+import { createRecipe, fetchRecipes } from './thunks.ts';
 
 type State = {
   data: recipe[];
   fetchRecipesLoadingStatus: LoadingStatusType;
   createRecipeLoadingStatus: LoadingStatusType;
-}
+};
 
 const initialState: State = {
   data: [],
   fetchRecipesLoadingStatus: LoadingStatus.INITIAL,
   createRecipeLoadingStatus: LoadingStatus.INITIAL,
-}
+};
 
 export const recipesSlice = createSlice({
   initialState,
@@ -40,6 +40,6 @@ export const recipesSlice = createSlice({
       .addCase(createRecipe.fulfilled, (state, action) => {
         state.createRecipeLoadingStatus = LoadingStatus.LOADED;
         state.data.push(action.payload);
-      })
-  }
-})
+      });
+  },
+});

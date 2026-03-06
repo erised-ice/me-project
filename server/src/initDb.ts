@@ -1,4 +1,4 @@
-import { pool } from "./db.js";
+import { pool } from './db.js';
 
 const initDb = async (): Promise<void> => {
   await pool.query(`
@@ -17,11 +17,11 @@ const initDb = async (): Promise<void> => {
     ADD COLUMN IF NOT EXISTS author TEXT;
   `);
 
-  console.log("DB initialized");
+  console.log('DB initialized');
   await pool.end();
 };
 
 initDb().catch((error) => {
-  console.error("Failed to initialize DB:", error);
+  console.error('Failed to initialize DB:', error);
   process.exit(1);
 });

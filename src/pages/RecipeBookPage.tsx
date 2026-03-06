@@ -1,23 +1,34 @@
-import {Layout} from "../shared/components/Layout/Layout.tsx";
-import {Link} from "../shared/components/Link/Link.tsx";
-import {getRoute, ROUTE} from "../shared/constants/routes.ts";
-import {type SyntheticEvent, useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../shared/hooks/redux.tsx";
+import { Layout } from '../shared/components/Layout/Layout.tsx';
+import { Link } from '../shared/components/Link/Link.tsx';
+import { getRoute, ROUTE } from '../shared/constants/routes.ts';
+import { type SyntheticEvent, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../shared/hooks/redux.tsx';
 import {
   selectCreateRecipeLoadingStatus,
   selectFetchRecipesLoadingStatus,
-  selectRecipes
-} from "../features/recipes/selectors.ts";
-import {createRecipe, fetchRecipes} from "../features/recipes/thunks.ts";
-import {Title, List, Paper, Stack, TextInput, Textarea, Button, Center, Loader, Alert} from "@mantine/core";
-import {LoadingStatus} from "../shared/constants/constants.ts";
+  selectRecipes,
+} from '../features/recipes/selectors.ts';
+import { createRecipe, fetchRecipes } from '../features/recipes/thunks.ts';
+import {
+  Title,
+  List,
+  Paper,
+  Stack,
+  TextInput,
+  Textarea,
+  Button,
+  Center,
+  Loader,
+  Alert,
+} from '@mantine/core';
+import { LoadingStatus } from '../shared/constants/constants.ts';
 
 export const RecipeBookPage = () => {
   const dispatch = useAppDispatch();
-  const [recipeName, setRecipeName] = useState("");
-  const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
-  const [author, setAuthor] = useState("");
+  const [recipeName, setRecipeName] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [instructions, setInstructions] = useState('');
+  const [author, setAuthor] = useState('');
   const recipes = useAppSelector(selectRecipes);
   const fetchRecipesLoadingStatus = useAppSelector(selectFetchRecipesLoadingStatus);
   const createRecipeLoadingStatus = useAppSelector(selectCreateRecipeLoadingStatus);
@@ -26,20 +37,20 @@ export const RecipeBookPage = () => {
     event.preventDefault();
     const newRecipe = {
       name: recipeName,
-      ingredients: ingredients.split("\n").map((line, index) => ({
+      ingredients: ingredients.split('\n').map((line, index) => ({
         id: index,
         text: line.trim(),
         tip: null,
-        }),),
+      })),
       description: instructions,
       author: author,
     };
     dispatch(createRecipe(newRecipe));
-    setRecipeName("");
-    setIngredients("");
-    setInstructions("");
-    setAuthor("");
-  }
+    setRecipeName('');
+    setIngredients('');
+    setInstructions('');
+    setAuthor('');
+  };
 
   useEffect(() => {
     dispatch(fetchRecipes());
@@ -47,15 +58,20 @@ export const RecipeBookPage = () => {
 
   return (
     <Layout>
-      <Title order={1} mb="md" c="cyan.8">Книга рецептов</Title>
+      <Title order={1} mb="md" c="cyan.8">
+        Книга рецептов
+      </Title>
       <Paper withBorder radius="md" p="md" mb="lg">
-          <Title order={2} mb="md" c="cyan.7">Добавить рецепт</Title>
-          <form onSubmit={handleSubmit}>
-            <Stack gap="md">
-            <TextInput label="Название"
-                       value={recipeName}
-                       onChange={(e) => setRecipeName(e.currentTarget.value)}
-                       required
+        <Title order={2} mb="md" c="cyan.7">
+          Добавить рецепт
+        </Title>
+        <form onSubmit={handleSubmit}>
+          <Stack gap="md">
+            <TextInput
+              label="Название"
+              value={recipeName}
+              onChange={(e) => setRecipeName(e.currentTarget.value)}
+              required
             />
             <Textarea
               label="Ингредиенты"
@@ -74,12 +90,17 @@ export const RecipeBookPage = () => {
               required
               resize="vertical"
             />
-            <TextInput label="Ваше имя"
-                       description="Представьтесь, пожалуйста =)"
-                         value={author}
-                         onChange={(e) => setAuthor(e.currentTarget.value)}
+            <TextInput
+              label="Ваше имя"
+              description="Представьтесь, пожалуйста =)"
+              value={author}
+              onChange={(e) => setAuthor(e.currentTarget.value)}
             />
-            <Button color="cyan" type="submit" loading={createRecipeLoadingStatus === LoadingStatus.LOADING}>
+            <Button
+              color="cyan"
+              type="submit"
+              loading={createRecipeLoadingStatus === LoadingStatus.LOADING}
+            >
               Добавить
             </Button>
             {createRecipeLoadingStatus === LoadingStatus.LOADED && (
@@ -87,48 +108,36 @@ export const RecipeBookPage = () => {
                 Рецепт успешно добавлен.
               </Alert>
             )}
-              {createRecipeLoadingStatus === LoadingStatus.ERROR && (
-                <Alert color="red" title="Ошибка">
-                  Не удалось сохранить рецепт. Попробуйте ещё раз.
-                </Alert>
-              )}
-            </Stack>
-          </form>
+            {createRecipeLoadingStatus === LoadingStatus.ERROR && (
+              <Alert color="red" title="Ошибка">
+                Не удалось сохранить рецепт. Попробуйте ещё раз.
+              </Alert>
+            )}
+          </Stack>
+        </form>
       </Paper>
       {/* TODO: сделать возможность добавлять ингредиенты с подсказками */}
-      {(fetchRecipesLoadingStatus === LoadingStatus.INITIAL || fetchRecipesLoadingStatus === LoadingStatus.LOADING) && (
-          <Center py="xl">
-            <Loader color="cyan"/>
-          </Center>
+      {(fetchRecipesLoadingStatus === LoadingStatus.INITIAL ||
+        fetchRecipesLoadingStatus === LoadingStatus.LOADING) && (
+        <Center py="xl">
+          <Loader color="cyan" />
+        </Center>
       )}
       {fetchRecipesLoadingStatus === LoadingStatus.ERROR && (
-        <>
-          Произошла ошибка загрузки, попробуйте перезагрузить страницу
-        </>
+        <>Произошла ошибка загрузки, попробуйте перезагрузить страницу</>
       )}
       {fetchRecipesLoadingStatus === LoadingStatus.LOADED && (
-        <List
-          listStyleType="none"
-          spacing="sm"
-          withPadding
-          fz="lg"
-        >
-          {
-            recipes.map(item => (
-              <li key={item.id}>
-                <Link to={getRoute(ROUTE.RECIPES, item.id)}>
-                  {item.name}
-                </Link>
-              </li>
-            ))
-          }
+        <List listStyleType="none" spacing="sm" withPadding fz="lg">
+          {recipes.map((item) => (
+            <li key={item.id}>
+              <Link to={getRoute(ROUTE.RECIPES, item.id)}>{item.name}</Link>
+            </li>
+          ))}
           <li>
-            <Link to={getRoute(ROUTE.RECIPES, 100)}>
-              Тестовый пустой рецепт
-            </Link>
+            <Link to={getRoute(ROUTE.RECIPES, 100)}>Тестовый пустой рецепт</Link>
           </li>
         </List>
       )}
     </Layout>
-  )
-}
+  );
+};
