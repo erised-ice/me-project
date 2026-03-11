@@ -4,13 +4,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export type CreateRecipePayload = Omit<recipe, 'id'>;
 
-type ApiRecipe = Omit<recipe, 'id'> & { id: number | string };
-
-const normalizeRecipe = (item: ApiRecipe): recipe => ({
-  ...item,
-  id: Number(item.id),
-});
-
 export const getRecipesApi = async (): Promise<recipe[]> => {
   const response = await fetch(API_URL);
 
@@ -18,8 +11,7 @@ export const getRecipesApi = async (): Promise<recipe[]> => {
     throw new Error('Failed to fetch recipes');
   }
 
-  const data = (await response.json()) as ApiRecipe[];
-  return data.map(normalizeRecipe);
+  return (await response.json()) as recipe[];
 };
 
 export const createRecipeApi = async (payload: CreateRecipePayload): Promise<recipe> => {
@@ -33,6 +25,5 @@ export const createRecipeApi = async (payload: CreateRecipePayload): Promise<rec
     throw new Error('Failed to create recipe');
   }
 
-  const data = (await response.json()) as ApiRecipe;
-  return normalizeRecipe(data);
+  return (await response.json()) as recipe;
 };

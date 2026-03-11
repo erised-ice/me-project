@@ -40,8 +40,7 @@ export const RecipeBookPage = () => {
     event.preventDefault();
     const newRecipe = {
       name: recipeName,
-      ingredients: ingredients.split('\n').map((line, index) => ({
-        id: index,
+      ingredients: ingredients.split('\n').map((line) => ({
         text: line.trim(),
         tip: null,
       })),

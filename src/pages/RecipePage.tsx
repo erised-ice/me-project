@@ -50,8 +50,8 @@ export const RecipePage = () => {
                       </ThemeIcon>
                     }
                   >
-                    {recipe.ingredients.map((item) => (
-                      <List.Item key={item.id}>
+                    {recipe.ingredients.map((item, index) => (
+                      <List.Item key={`${item.text}-${index}`}>
                         {item.text} {item.tip && `(${item.tip})`}
                       </List.Item>
                     ))}

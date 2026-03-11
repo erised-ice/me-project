@@ -7,7 +7,6 @@ export type recipe = {
 };
 
 export type ingredient = {
-  id: number;
   text: string;
   tip: string | null;
 };
