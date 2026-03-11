@@ -20,8 +20,11 @@ import {
   Center,
   Loader,
   Alert,
+  Group,
+  ActionIcon,
 } from '@mantine/core';
 import { LoadingStatus } from '../shared/constants/constants.ts';
+import { IconTrash } from '@tabler/icons-react';
 
 export const RecipeBookPage = () => {
   const dispatch = useAppDispatch();
@@ -129,9 +132,14 @@ export const RecipeBookPage = () => {
       {fetchRecipesLoadingStatus === LoadingStatus.LOADED && (
         <List listStyleType="none" spacing="sm" withPadding fz="lg">
           {recipes.map((item) => (
-            <li key={item.id}>
-              <Link to={getRoute(ROUTE.RECIPES, item.id)}>{item.name}</Link>
-            </li>
+            <List.Item key={item.id}>
+              <Group justify="space-between" gap="sm">
+                <Link to={getRoute(ROUTE.RECIPES, item.id)}>{item.name}</Link>
+                <ActionIcon color="red" variant="light" aria-label="Удалить рецепт">
+                  <IconTrash size={18} />
+                </ActionIcon>
+              </Group>
+            </List.Item>
           ))}
           <li>
             <Link to={getRoute(ROUTE.RECIPES, 100)}>Тестовый пустой рецепт</Link>
