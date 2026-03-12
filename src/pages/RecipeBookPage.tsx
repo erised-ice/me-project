@@ -136,10 +136,10 @@ export const RecipeBookPage = () => {
       {fetchRecipesLoadingStatus === LoadingStatus.LOADED && (
         <List listStyleType="none" spacing="sm" withPadding fz="lg">
           <List.Item>
-            <Link to={getRoute(ROUTE.RECIPES, 0)}>{recipes[0].name}</Link>
+            <Link to={getRoute(ROUTE.RECIPES, 1)}>{recipes[0].name}</Link>
           </List.Item>
           <List.Item>
-            <Link to={getRoute(ROUTE.RECIPES, 1)}>{recipes[1].name}</Link>
+            <Link to={getRoute(ROUTE.RECIPES, 2)}>{recipes[1].name}</Link>
           </List.Item>
           {recipes.slice(2).map((item) => (
             <List.Item key={item.id}>
