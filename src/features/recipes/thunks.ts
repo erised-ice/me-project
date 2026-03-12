@@ -1,5 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { createRecipeApi, type CreateRecipePayload, getRecipesApi } from './api.ts';
+import {
+  createRecipeApi,
+  type CreateRecipePayload,
+  deleteRecipeApi,
+  getRecipesApi,
+} from './api.ts';
 import type { recipe } from './types.ts';
 
 export const fetchRecipes = createAsyncThunk<recipe[], void, { rejectValue: string }>(
@@ -20,6 +25,18 @@ export const createRecipe = createAsyncThunk<recipe, CreateRecipePayload, { reje
       return await createRecipeApi(payload);
     } catch {
       return rejectWithValue('Не удалось создать рецепт');
+    }
+  },
+);
+
+export const deleteRecipe = createAsyncThunk<number, number, { rejectValue: string }>(
+  'recipes/deleteRecipe',
+  async (payload, { rejectWithValue }) => {
+    try {
+      await deleteRecipeApi(payload);
+      return payload;
+    } catch {
+      return rejectWithValue('Не удалось удалить рецепт');
     }
   },
 );

@@ -8,7 +8,7 @@ import {
   selectFetchRecipesLoadingStatus,
   selectRecipes,
 } from '../features/recipes/selectors.ts';
-import { createRecipe, fetchRecipes } from '../features/recipes/thunks.ts';
+import { createRecipe, deleteRecipe, fetchRecipes } from '../features/recipes/thunks.ts';
 import {
   Title,
   List,
@@ -52,6 +52,11 @@ export const RecipeBookPage = () => {
     setIngredients('');
     setInstructions('');
     setAuthor('');
+  };
+
+  const handleDelete = (id: number) => {
+    dispatch(deleteRecipe(id));
+    console.log('delete');
   };
 
   useEffect(() => {
@@ -134,7 +139,12 @@ export const RecipeBookPage = () => {
             <List.Item key={item.id}>
               <Group justify="space-between" gap="sm">
                 <Link to={getRoute(ROUTE.RECIPES, item.id)}>{item.name}</Link>
-                <ActionIcon color="red" variant="light" aria-label="Удалить рецепт">
+                <ActionIcon
+                  onClick={() => handleDelete(item.id)}
+                  color="red"
+                  variant="light"
+                  aria-label="Удалить рецепт"
+                >
                   <IconTrash size={18} />
                 </ActionIcon>
               </Group>

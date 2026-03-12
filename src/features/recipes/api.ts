@@ -27,3 +27,13 @@ export const createRecipeApi = async (payload: CreateRecipePayload): Promise<rec
 
   return (await response.json()) as recipe;
 };
+
+export const deleteRecipeApi = async (recipeId: number): Promise<void> => {
+  const response = await fetch(`${API_URL}/${recipeId}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete recipe');
+  }
+};

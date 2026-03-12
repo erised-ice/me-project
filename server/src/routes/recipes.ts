@@ -62,3 +62,28 @@ recipesRouter.post('/', async (req, res) => {
 
   return res.status(201).json(normalizeRecipe(result.rows[0] as RecipeRow));
 });
+
+recipesRouter.delete('/:id', async (req, res) => {
+  const recipeId = Number(req.params.id);
+
+  if (Number.isNaN(recipeId)) {
+    return res.status(400).json({
+      message: 'Invalid recipe id',
+    });
+  }
+
+  const result = await pool.query(
+    `DELETE FROM recipes
+     WHERE id = $1
+     RETURNING id`,
+    [recipeId],
+  );
+
+  if (result.rowCount === 0) {
+    return res.status(404).json({
+      message: 'Recipe not found',
+    });
+  }
+
+  return res.status(204).send();
+});

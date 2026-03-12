@@ -1,18 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { recipe } from './types.ts';
 import { LoadingStatus, type LoadingStatusType } from '../../shared/constants/constants.ts';
-import { createRecipe, fetchRecipes } from './thunks.ts';
+import { createRecipe, deleteRecipe, fetchRecipes } from './thunks.ts';
 
 type State = {
   data: recipe[];
   fetchRecipesLoadingStatus: LoadingStatusType;
   createRecipeLoadingStatus: LoadingStatusType;
+  deleteRecipeLoadingStatus: LoadingStatusType;
 };
 
 const initialState: State = {
   data: [],
   fetchRecipesLoadingStatus: LoadingStatus.INITIAL,
   createRecipeLoadingStatus: LoadingStatus.INITIAL,
+  deleteRecipeLoadingStatus: LoadingStatus.INITIAL,
 };
 
 export const recipesSlice = createSlice({
@@ -40,6 +42,16 @@ export const recipesSlice = createSlice({
       .addCase(createRecipe.fulfilled, (state, action) => {
         state.createRecipeLoadingStatus = LoadingStatus.LOADED;
         state.data.push(action.payload);
+      })
+      .addCase(deleteRecipe.pending, (state) => {
+        state.deleteRecipeLoadingStatus = LoadingStatus.LOADING;
+      })
+      .addCase(deleteRecipe.rejected, (state) => {
+        state.deleteRecipeLoadingStatus = LoadingStatus.ERROR;
+      })
+      .addCase(deleteRecipe.fulfilled, (state, action) => {
+        state.deleteRecipeLoadingStatus = LoadingStatus.LOADED;
+        state.data = state.data.filter((item) => item.id !== action.payload);
       });
   },
 });
