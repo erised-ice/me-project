@@ -11,3 +11,7 @@ export const selectFetchRecipesLoadingStatus = (state: RootState) => {
 export const selectCreateRecipeLoadingStatus = (state: RootState) => {
   return state.recipes.createRecipeLoadingStatus;
 };
+
+export const selectDeleteRecipeLoadingStatus = (state: RootState) => {
+  return state.recipes.deleteRecipeLoadingStatus;
+};

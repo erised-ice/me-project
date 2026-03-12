@@ -5,6 +5,7 @@ import { type SyntheticEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../shared/hooks/redux.tsx';
 import {
   selectCreateRecipeLoadingStatus,
+  selectDeleteRecipeLoadingStatus,
   selectFetchRecipesLoadingStatus,
   selectRecipes,
 } from '../features/recipes/selectors.ts';
@@ -19,12 +20,12 @@ import {
   Button,
   Center,
   Loader,
-  Alert,
   Group,
   ActionIcon,
 } from '@mantine/core';
 import { LoadingStatus } from '../shared/constants/constants.ts';
 import { IconTrash } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
 
 export const RecipeBookPage = () => {
   const dispatch = useAppDispatch();
@@ -35,6 +36,7 @@ export const RecipeBookPage = () => {
   const recipes = useAppSelector(selectRecipes);
   const fetchRecipesLoadingStatus = useAppSelector(selectFetchRecipesLoadingStatus);
   const createRecipeLoadingStatus = useAppSelector(selectCreateRecipeLoadingStatus);
+  const deleteRecipeLoadingStatus = useAppSelector(selectDeleteRecipeLoadingStatus);
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     event.preventDefault();
@@ -48,6 +50,7 @@ export const RecipeBookPage = () => {
       author: author,
     };
     dispatch(createRecipe(newRecipe));
+    /*TODO: Убрать автоматическую очистку формы, сделать по-другому, чтобы можно было отредактировать в случае неудачи */
     setRecipeName('');
     setIngredients('');
     setInstructions('');
@@ -56,12 +59,47 @@ export const RecipeBookPage = () => {
 
   const handleDelete = (id: number) => {
     dispatch(deleteRecipe(id));
-    console.log('delete');
   };
 
   useEffect(() => {
     dispatch(fetchRecipes());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (createRecipeLoadingStatus === LoadingStatus.LOADED) {
+      notifications.show({
+        color: 'green',
+        title: 'Готово',
+        message: 'Рецепт успешно добавлен',
+      });
+    }
+
+    if (createRecipeLoadingStatus === LoadingStatus.ERROR) {
+      notifications.show({
+        color: 'red',
+        title: 'Ошибка',
+        message: 'Не удалось сохранить рецепт. Попробуйте ещё раз.',
+      });
+    }
+  }, [createRecipeLoadingStatus]);
+
+  useEffect(() => {
+    if (deleteRecipeLoadingStatus === LoadingStatus.LOADED) {
+      notifications.show({
+        color: 'green',
+        title: 'Готово',
+        message: 'Рецепт успешно удалён',
+      });
+    }
+
+    if (deleteRecipeLoadingStatus === LoadingStatus.ERROR) {
+      notifications.show({
+        color: 'red',
+        title: 'Ошибка',
+        message: 'Не удалось удалить рецепт. Попробуйте ещё раз.',
+      });
+    }
+  }, [deleteRecipeLoadingStatus]);
 
   return (
     <Layout>
@@ -110,16 +148,6 @@ export const RecipeBookPage = () => {
             >
               Добавить
             </Button>
-            {createRecipeLoadingStatus === LoadingStatus.LOADED && (
-              <Alert color="green" title="Готово">
-                Рецепт успешно добавлен.
-              </Alert>
-            )}
-            {createRecipeLoadingStatus === LoadingStatus.ERROR && (
-              <Alert color="red" title="Ошибка">
-                Не удалось сохранить рецепт. Попробуйте ещё раз.
-              </Alert>
-            )}
           </Stack>
         </form>
       </Paper>
