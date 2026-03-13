@@ -1,8 +1,7 @@
-import { Link } from '../../../Link/Link.tsx';
-import { ROUTE } from '../../../../constants/routes.ts';
+import { Link } from '@/shared/components/Link/Link.tsx';
+import { ROUTE } from '@/shared/constants/routes.ts';
 import { AppShell, Button, Container, Group } from '@mantine/core';
 
-/*TODO: добавить алиасы чтобы писать сокращенные пути (а может и не надо)*/
 export const Header = () => {
   return (
     <AppShell.Header>
