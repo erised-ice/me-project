@@ -10,5 +10,5 @@
     "skipLibCheck": true
   },
   "include": ["src"],
-  "exclude": ["src/seedRecipes.ts"]
+  "exclude": ["src/scripts/seedRecipes.ts"]
 }

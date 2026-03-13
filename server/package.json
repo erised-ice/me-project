@@ -10,7 +10,7 @@
     "start": "node dist/index.js",
     "init-db": "tsx src/initDb.ts",
     "reset-db": "tsx src/resetDb.ts",
-    "seed": "tsx src/seedRecipes.ts"
+    "seed": "tsx src/scripts/seedRecipes.ts"
   },
   "keywords": [],
   "author": "",

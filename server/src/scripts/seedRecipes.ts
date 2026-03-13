@@ -1,5 +1,5 @@
-import { pool } from './db.js';
-import { recipes } from '../../src/shared/data/data.ts';
+import { pool } from '../db';
+import { recipes } from '../data/data';
 
 const seed = async (): Promise<void> => {
   for (const recipe of recipes) {
