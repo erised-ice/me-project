@@ -1,6 +1,6 @@
-import { Link } from '@/shared/components/Link/Link.tsx';
 import { ROUTE } from '@/shared/constants/routes.ts';
-import { AppShell, Button, Container, Group } from '@mantine/core';
+import { AppShell, Container, Group } from '@mantine/core';
+import { Button, Link } from '@/shared/components';
 
 export const Header = () => {
   return (
@@ -10,10 +10,10 @@ export const Header = () => {
       */}
       <Container size="lg" px="md" h="100%">
         <Group h="100%">
-          <Button variant="filled" color="cyan" size="lg" radius="md">
+          <Button>
             <Link to={ROUTE.HOME}>Главная</Link>
           </Button>
-          <Button variant="filled" color="cyan" size="lg" radius="md">
+          <Button>
             <Link to={ROUTE.RECIPES}>Рецепты</Link>
           </Button>
         </Group>
