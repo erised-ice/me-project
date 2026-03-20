@@ -1,5 +1,4 @@
 import { Layout } from '../shared/components/Layout/Layout.tsx';
-import { Link } from '../shared/components/Link/Link.tsx';
 import { getRoute, ROUTE } from '../shared/constants/routes.ts';
 import { type SyntheticEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../shared/hooks/redux.tsx';
@@ -10,22 +9,11 @@ import {
   selectRecipes,
 } from '../features/recipes/selectors.ts';
 import { createRecipe, deleteRecipe, fetchRecipes } from '../features/recipes/thunks.ts';
-import {
-  Title,
-  List,
-  Paper,
-  Stack,
-  TextInput,
-  Textarea,
-  Button,
-  Center,
-  Loader,
-  Group,
-  ActionIcon,
-} from '@mantine/core';
+import { List, Paper, Stack, TextInput, Textarea, Group, ActionIcon } from '@mantine/core';
 import { LoadingStatus } from '../shared/constants/constants.ts';
 import { IconTrash } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
+import { Button, Link, LoaderBlock, Title } from '@/shared/components';
 
 export const RecipeBookPage = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +21,9 @@ export const RecipeBookPage = () => {
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
   const [author, setAuthor] = useState('');
+
   const recipes = useAppSelector(selectRecipes);
+
   const fetchRecipesLoadingStatus = useAppSelector(selectFetchRecipesLoadingStatus);
   const createRecipeLoadingStatus = useAppSelector(selectCreateRecipeLoadingStatus);
   const deleteRecipeLoadingStatus = useAppSelector(selectDeleteRecipeLoadingStatus);
@@ -103,13 +93,11 @@ export const RecipeBookPage = () => {
 
   return (
     <Layout>
-      <Title order={1} mb="md" c="cyan.8">
+      <Title mb="md" order={1}>
         Книга рецептов
       </Title>
       <Paper withBorder radius="md" p="md" mb="lg">
-        <Title order={2} mb="md" c="cyan.7">
-          Добавить рецепт
-        </Title>
+        <Title order={2}>Добавить рецепт</Title>
         <form onSubmit={handleSubmit}>
           <Stack gap="md">
             <TextInput
@@ -141,11 +129,7 @@ export const RecipeBookPage = () => {
               value={author}
               onChange={(e) => setAuthor(e.currentTarget.value)}
             />
-            <Button
-              color="cyan"
-              type="submit"
-              loading={createRecipeLoadingStatus === LoadingStatus.LOADING}
-            >
+            <Button type="submit" loading={createRecipeLoadingStatus === LoadingStatus.LOADING}>
               Добавить
             </Button>
           </Stack>
@@ -153,11 +137,7 @@ export const RecipeBookPage = () => {
       </Paper>
       {/* TODO: сделать возможность добавлять ингредиенты с подсказками */}
       {(fetchRecipesLoadingStatus === LoadingStatus.INITIAL ||
-        fetchRecipesLoadingStatus === LoadingStatus.LOADING) && (
-        <Center py="xl">
-          <Loader color="cyan" />
-        </Center>
-      )}
+        fetchRecipesLoadingStatus === LoadingStatus.LOADING) && <LoaderBlock />}
       {fetchRecipesLoadingStatus === LoadingStatus.ERROR && (
         <>Произошла ошибка загрузки, попробуйте перезагрузить страницу</>
       )}

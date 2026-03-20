@@ -4,9 +4,10 @@ import { useAppDispatch, useAppSelector } from '../shared/hooks/redux.tsx';
 import { selectFetchRecipesLoadingStatus, selectRecipes } from '../features/recipes/selectors.ts';
 import { useEffect } from 'react';
 import { fetchRecipes } from '../features/recipes/thunks.ts';
-import { Title, Text, Paper, List, ThemeIcon, Loader, Center } from '@mantine/core';
+import { Paper, List, ThemeIcon } from '@mantine/core';
 import { IconChefHat } from '@tabler/icons-react';
 import { LoadingStatus } from '../shared/constants/constants.ts';
+import { LoaderBlock, Text, Title } from '@/shared/components';
 
 export const RecipePage = () => {
   const dispatch = useAppDispatch();
@@ -22,16 +23,12 @@ export const RecipePage = () => {
   return (
     <Layout>
       {(fetchRecipesLoadingStatus === LoadingStatus.INITIAL ||
-        fetchRecipesLoadingStatus === LoadingStatus.LOADING) && (
-        <Center py="xl">
-          <Loader color="cyan" />
-        </Center>
-      )}
+        fetchRecipesLoadingStatus === LoadingStatus.LOADING) && <LoaderBlock />}
       {fetchRecipesLoadingStatus === LoadingStatus.LOADED && (
         <>
           {recipe && (
             <>
-              <Title order={1} mb="md" c="cyan.8">
+              <Title mb="md" order={1}>
                 {recipe.name}
               </Title>
               {recipe.ingredients && (
@@ -65,14 +62,13 @@ export const RecipePage = () => {
                 <Title order={3} mb="xs">
                   Приготовление
                 </Title>
-                <Text size="lg" lh={1.6} c="cyan.9">
-                  {recipe.description}
-                </Text>
+                <Text textMode="accent">{recipe.description}</Text>
                 {recipe.author && (
-                  <Text size="sm" c="dimmed" mb="md">
+                  <Text textMode="note" mb="md">
                     Добавил(а): {recipe.author}
                   </Text>
                 )}
+                {/* TODO: replace Text from Mantine for app ui Text */}
               </div>
             </>
           )}
