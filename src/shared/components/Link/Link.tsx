@@ -1,17 +1,16 @@
+import type { LinkProps as ReactLinkProps } from 'react-router-dom';
+
 import { Link as ReactLink } from 'react-router-dom';
-import type { ReactNode } from 'react';
 import cx from 'classnames';
 import styles from './Link.module.scss';
 
 type LinkProps = {
-  children: ReactNode;
-  to: string;
   isText?: boolean;
-};
+} & ReactLinkProps;
 
-export const Link = ({ children, to, isText }: LinkProps) => {
+export const Link = ({ children, isText, ...props }: LinkProps) => {
   return (
-    <ReactLink className={cx(styles.link, isText && styles.text)} to={to}>
+    <ReactLink className={cx(styles.link, isText && styles.text)} {...props}>
       {children}
     </ReactLink>
   );

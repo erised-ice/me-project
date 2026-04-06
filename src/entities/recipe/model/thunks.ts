@@ -4,10 +4,10 @@ import {
   type CreateRecipePayload,
   deleteRecipeApi,
   getRecipesApi,
-} from './api.ts';
-import type { recipe } from './types.ts';
+} from '../api.ts';
+import type { Recipe } from './types.ts';
 
-export const fetchRecipes = createAsyncThunk<recipe[], void, { rejectValue: string }>(
+export const fetchRecipes = createAsyncThunk<Recipe[], void, { rejectValue: string }>(
   'recipes/fetchRecipes',
   async (_, { rejectWithValue }) => {
     try {
@@ -18,7 +18,7 @@ export const fetchRecipes = createAsyncThunk<recipe[], void, { rejectValue: stri
   },
 );
 
-export const createRecipe = createAsyncThunk<recipe, CreateRecipePayload, { rejectValue: string }>(
+export const createRecipe = createAsyncThunk<Recipe, CreateRecipePayload, { rejectValue: string }>(
   'recipes/createRecipe',
   async (payload, { rejectWithValue }) => {
     try {

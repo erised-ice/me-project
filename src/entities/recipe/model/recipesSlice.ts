@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { recipe } from './types.ts';
+import type { Recipe } from './types.ts';
 import { createRecipe, deleteRecipe, fetchRecipes } from './thunks.ts';
 import { LoadingStatus, type LoadingStatusType } from '@/shared/constants/constants.ts';
 
 type State = {
-  data: recipe[];
+  data: Recipe[];
   fetchRecipesLoadingStatus: LoadingStatusType;
   createRecipeLoadingStatus: LoadingStatusType;
   deleteRecipeLoadingStatus: LoadingStatusType;
@@ -16,6 +16,8 @@ const initialState: State = {
   createRecipeLoadingStatus: LoadingStatus.INITIAL,
   deleteRecipeLoadingStatus: LoadingStatus.INITIAL,
 };
+
+/*TODO: сделать отдельно слайсы для рецепта, рецептов, удаление рецепта, создание рецепта, потому что одна модель - одна операция. И в файле слайса сделать и селектор, и санки, которые относятся к этой сущности */
 
 export const recipesSlice = createSlice({
   initialState,

@@ -5,14 +5,14 @@ type TitleProps = MantineTitleProps & {
   children: ReactNode;
 };
 
+type TitleOrder = NonNullable<TitleProps['order']>;
+
+const titleColorByOrder: Partial<Record<TitleOrder, string>> = {
+  1: 'cyan.8',
+  2: 'cyan.7',
+};
+
 export const Title = ({ children, order }: TitleProps) => {
-  type TitleOrder = NonNullable<TitleProps['order']>;
-
-  const titleColorByOrder: Partial<Record<TitleOrder, string>> = {
-    1: 'cyan.8',
-    2: 'cyan.7',
-  };
-
   const titleColor = order ? (titleColorByOrder[order] ?? 'cyan.8') : 'cyan.8';
 
   return (

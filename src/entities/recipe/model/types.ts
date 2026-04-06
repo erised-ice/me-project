@@ -1,12 +1,12 @@
-export type recipe = {
+export type Recipe = {
   id: number;
   name: string;
-  ingredients: ingredient[];
+  ingredients: Ingredient[];
   description: string;
   author: string | null;
 };
 
-export type ingredient = {
+export type Ingredient = {
   text: string;
   tip: string | null;
 };

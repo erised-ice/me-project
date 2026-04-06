@@ -1,35 +1,35 @@
-import { Layout } from '../shared/components/Layout/Layout.tsx';
+import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
 import { getRoute, ROUTE } from '../shared/constants/routes.ts';
-import { type SyntheticEvent, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../shared/hooks/redux.tsx';
+import { type SubmitEvent, useEffect, useState } from 'react';
 import {
   selectCreateRecipeLoadingStatus,
-  selectDeleteRecipeLoadingStatus,
   selectFetchRecipesLoadingStatus,
   selectRecipes,
-} from '../features/recipes/selectors.ts';
-import { createRecipe, deleteRecipe, fetchRecipes } from '../features/recipes/thunks.ts';
+} from '@/entities/recipe/model/selectors.ts';
+// TODO настроить линтер, чтобы был порядок импортов simple-import-sort/imports eslint (react всегда в начале, относительные пути в конце (но лучше узнать еще у ИИ)
+import { createRecipe, deleteRecipe, fetchRecipes } from '@/entities/recipe/model/thunks.ts';
 import { List, Paper, Stack, TextInput, Textarea, Group, ActionIcon } from '@mantine/core';
 import { LoadingStatus } from '../shared/constants/constants.ts';
 import { IconTrash } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 import { Button, Link, LoaderBlock, Title } from '@/shared/components';
+import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
 
 export const RecipeBookPage = () => {
   const dispatch = useAppDispatch();
+
+  const recipes = useAppSelector(selectRecipes);
+  const fetchRecipesLoadingStatus = useAppSelector(selectFetchRecipesLoadingStatus);
+  const createRecipeLoadingStatus = useAppSelector(selectCreateRecipeLoadingStatus);
+
   const [recipeName, setRecipeName] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
   const [author, setAuthor] = useState('');
 
-  const recipes = useAppSelector(selectRecipes);
-
-  const fetchRecipesLoadingStatus = useAppSelector(selectFetchRecipesLoadingStatus);
-  const createRecipeLoadingStatus = useAppSelector(selectCreateRecipeLoadingStatus);
-  const deleteRecipeLoadingStatus = useAppSelector(selectDeleteRecipeLoadingStatus);
-
-  const handleSubmit = (event: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const newRecipe = {
       name: recipeName,
       ingredients: ingredients.split('\n').map((line) => ({
@@ -39,7 +39,11 @@ export const RecipeBookPage = () => {
       description: instructions,
       author: author,
     };
+
+    /*TODO: Сделать проверку на пустые строки ингридиентов (чтобы пустые строки не рендерелись) */
+    //TODO: Отрпавку рецепта тоже по такому же образу как делит сделать через промисы и трай кэтч (соотв. и нотификации)
     dispatch(createRecipe(newRecipe));
+
     /*TODO: Убрать автоматическую очистку формы, сделать по-другому, чтобы можно было отредактировать в случае неудачи */
     setRecipeName('');
     setIngredients('');
@@ -47,8 +51,23 @@ export const RecipeBookPage = () => {
     setAuthor('');
   };
 
-  const handleDelete = (id: number) => {
-    dispatch(deleteRecipe(id));
+  //TODO: Разобраться почему мы это все тут объединили, вместо привязки к лоадерам через юз эффект, особенно про анврап. Но тут происходит вот что: (как я поняла на первый раз) делит ресипе запускается асинхронно, и дальше если успех то показываем зеленую, если ошибка, то красную (тут все дело в промисах)
+  const handleDelete = async (id: number) => {
+    try {
+      await dispatch(deleteRecipe(id)).unwrap();
+
+      notifications.show({
+        color: 'green',
+        title: 'Готово',
+        message: 'Рецепт успешно удалён',
+      });
+    } catch {
+      notifications.show({
+        color: 'red',
+        title: 'Ошибка',
+        message: 'Не удалось удалить рецепт. Попробуйте ещё раз.',
+      });
+    }
   };
 
   useEffect(() => {
@@ -72,25 +91,7 @@ export const RecipeBookPage = () => {
       });
     }
   }, [createRecipeLoadingStatus]);
-
-  useEffect(() => {
-    if (deleteRecipeLoadingStatus === LoadingStatus.LOADED) {
-      notifications.show({
-        color: 'green',
-        title: 'Готово',
-        message: 'Рецепт успешно удалён',
-      });
-    }
-
-    if (deleteRecipeLoadingStatus === LoadingStatus.ERROR) {
-      notifications.show({
-        color: 'red',
-        title: 'Ошибка',
-        message: 'Не удалось удалить рецепт. Попробуйте ещё раз.',
-      });
-    }
-  }, [deleteRecipeLoadingStatus]);
-
+  /*TODO: форму со всей ее логикой вынести в папку виджеты. Список рецептов со страницы рецепта тоже туда. */
   return (
     <Layout>
       <Title mb="md" order={1}>
