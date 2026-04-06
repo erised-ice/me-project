@@ -1,19 +1,18 @@
-import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
-import { getRoute, ROUTE } from '../shared/constants/routes.ts';
 import { type SubmitEvent, useEffect, useState } from 'react';
+import { ActionIcon, Group, List, Paper, Stack, Textarea, TextInput } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { IconTrash } from '@tabler/icons-react';
+import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
 import {
   selectCreateRecipeLoadingStatus,
   selectFetchRecipesLoadingStatus,
   selectRecipes,
 } from '@/entities/recipe/model/selectors.ts';
-// TODO настроить линтер, чтобы был порядок импортов simple-import-sort/imports eslint (react всегда в начале, относительные пути в конце (но лучше узнать еще у ИИ)
 import { createRecipe, deleteRecipe, fetchRecipes } from '@/entities/recipe/model/thunks.ts';
-import { List, Paper, Stack, TextInput, Textarea, Group, ActionIcon } from '@mantine/core';
-import { LoadingStatus } from '../shared/constants/constants.ts';
-import { IconTrash } from '@tabler/icons-react';
-import { notifications } from '@mantine/notifications';
 import { Button, Link, LoaderBlock, Title } from '@/shared/components';
 import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
+import { LoadingStatus } from '../shared/constants/constants.ts';
+import { getRoute, ROUTE } from '../shared/constants/routes.ts';
 
 export const RecipeBookPage = () => {
   const dispatch = useAppDispatch();

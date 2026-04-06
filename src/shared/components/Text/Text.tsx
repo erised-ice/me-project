@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
 import { Text as MantineText, type TextProps as MantineTextProps } from '@mantine/core';
+import type { ReactNode } from 'react';
 
 type TextMode = 'default' | 'accent' | 'note';
 

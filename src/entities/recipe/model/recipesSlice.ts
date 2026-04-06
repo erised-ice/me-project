@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { Recipe } from './types.ts';
-import { createRecipe, deleteRecipe, fetchRecipes } from './thunks.ts';
 import { LoadingStatus, type LoadingStatusType } from '@/shared/constants/constants.ts';
+import { createRecipe, deleteRecipe, fetchRecipes } from './thunks.ts';
+import type { Recipe } from './types.ts';
 
 type State = {
   data: Recipe[];

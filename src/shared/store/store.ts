@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { recipesSlice } from '@/entities/recipe/model/recipesSlice.ts';
 import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { recipesSlice } from '@/entities/recipe/model/recipesSlice.ts';
 
 export const store = configureStore({
   reducer: {

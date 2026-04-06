@@ -1,6 +1,6 @@
 import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
-import { getRoute, ROUTE } from '../shared/constants/routes.ts';
 import { Link, Text, Title } from '@/shared/components';
+import { getRoute, ROUTE } from '../shared/constants/routes.ts';
 
 export const MainPage = () => (
   <Layout>

@@ -1,6 +1,6 @@
-import { ROUTE } from '@/shared/constants/routes.ts';
 import { AppShell, Container, Group } from '@mantine/core';
 import { Button, Link } from '@/shared/components';
+import { ROUTE } from '@/shared/constants/routes.ts';
 
 export const Header = () => {
   return (
