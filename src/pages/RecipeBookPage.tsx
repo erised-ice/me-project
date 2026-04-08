@@ -26,31 +26,46 @@ export const RecipeBookPage = () => {
   const [instructions, setInstructions] = useState('');
   const [author, setAuthor] = useState('');
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const ingredientLines = ingredients.split('\n');
+    const trimmedIngredientLines = ingredientLines.map((line) => line.trim());
+    const nonEmptyIngredientLines = trimmedIngredientLines.filter((line) => line !== '');
+    const recipeIngredients = nonEmptyIngredientLines.map((line) => ({
+      text: line,
+      tip: null,
+    }));
 
     const newRecipe = {
       name: recipeName,
-      ingredients: ingredients.split('\n').map((line) => ({
-        text: line.trim(),
-        tip: null,
-      })),
+      ingredients: recipeIngredients,
       description: instructions,
       author: author,
     };
 
-    /*TODO: Сделать проверку на пустые строки ингридиентов (чтобы пустые строки не рендерелись) */
-    //TODO: Отрпавку рецепта тоже по такому же образу как делит сделать через промисы и трай кэтч (соотв. и нотификации)
-    dispatch(createRecipe(newRecipe));
+    try {
+      await dispatch(createRecipe(newRecipe)).unwrap();
 
-    /*TODO: Убрать автоматическую очистку формы, сделать по-другому, чтобы можно было отредактировать в случае неудачи */
-    setRecipeName('');
-    setIngredients('');
-    setInstructions('');
-    setAuthor('');
+      notifications.show({
+        color: 'green',
+        title: 'Готово',
+        message: 'Рецепт успешно добавлен',
+      });
+
+      setRecipeName('');
+      setIngredients('');
+      setInstructions('');
+      setAuthor('');
+    } catch {
+      notifications.show({
+        color: 'red',
+        title: 'Ошибка',
+        message: 'Не удалось сохранить рецепт. Попробуйте ещё раз.',
+      });
+    }
   };
 
-  //TODO: Разобраться почему мы это все тут объединили, вместо привязки к лоадерам через юз эффект, особенно про анврап. Но тут происходит вот что: (как я поняла на первый раз) делит ресипе запускается асинхронно, и дальше если успех то показываем зеленую, если ошибка, то красную (тут все дело в промисах)
   const handleDelete = async (id: number) => {
     try {
       await dispatch(deleteRecipe(id)).unwrap();
@@ -73,23 +88,6 @@ export const RecipeBookPage = () => {
     dispatch(fetchRecipes());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (createRecipeLoadingStatus === LoadingStatus.LOADED) {
-      notifications.show({
-        color: 'green',
-        title: 'Готово',
-        message: 'Рецепт успешно добавлен',
-      });
-    }
-
-    if (createRecipeLoadingStatus === LoadingStatus.ERROR) {
-      notifications.show({
-        color: 'red',
-        title: 'Ошибка',
-        message: 'Не удалось сохранить рецепт. Попробуйте ещё раз.',
-      });
-    }
-  }, [createRecipeLoadingStatus]);
   /*TODO: форму со всей ее логикой вынести в папку виджеты. Список рецептов со страницы рецепта тоже туда. */
   return (
     <Layout>
