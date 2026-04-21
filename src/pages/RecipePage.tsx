@@ -4,10 +4,10 @@ import { IconChefHat } from '@tabler/icons-react';
 import { useParams } from 'react-router-dom';
 import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
 import {
+  fetchRecipes,
   selectFetchRecipesLoadingStatus,
   selectRecipes,
-} from '@/entities/recipe/model/selectors.ts';
-import { fetchRecipes } from '@/entities/recipe/model/thunks.ts';
+} from '@/entities/recipe/model/recipesSlice.ts';
 import { LoaderBlock, Text, Title } from '@/shared/components';
 import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
 import { LoadingStatus } from '../shared/constants/constants.ts';

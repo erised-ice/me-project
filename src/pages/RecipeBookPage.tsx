@@ -4,10 +4,10 @@ import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
 import { CreateRecipeForm } from '@/widgets/CreateRecipeForm/CreateRecipeForm.tsx';
 import { RecipeList } from '@/widgets/RecipeList/RecipeList.tsx';
 import {
+  fetchRecipes,
   selectFetchRecipesLoadingStatus,
   selectRecipes,
-} from '@/entities/recipe/model/selectors.ts';
-import { fetchRecipes } from '@/entities/recipe/model/thunks.ts';
+} from '@/entities/recipe/model/recipesSlice.ts';
 import { LoaderBlock, Title } from '@/shared/components';
 import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
 import { LoadingStatus } from '../shared/constants/constants.ts';

@@ -1,8 +1,10 @@
 import { type SubmitEvent, useState } from 'react';
 import { Stack, Textarea, TextInput } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { selectCreateRecipeLoadingStatus } from '@/entities/recipe/model/selectors.ts';
-import { createRecipe } from '@/entities/recipe/model/thunks.ts';
+import {
+  createRecipe,
+  selectCreateRecipeLoadingStatus,
+} from '@/entities/recipe/model/createRecipeSlice.ts';
 import { Button } from '@/shared/components';
 import { LoadingStatus } from '@/shared/constants/constants.ts';
 import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';

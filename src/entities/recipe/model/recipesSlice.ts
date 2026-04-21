@@ -1,23 +1,31 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getRecipesApi } from '@/entities/recipe/api.ts';
+import { deleteRecipe } from '@/entities/recipe/model/deleteRecipeSlice.ts';
 import { LoadingStatus, type LoadingStatusType } from '@/shared/constants/constants.ts';
-import { createRecipe, deleteRecipe, fetchRecipes } from './thunks.ts';
+import type { RootState } from '@/shared/store/store.ts';
+import { createRecipe } from './createRecipeSlice.ts';
 import type { Recipe } from './types.ts';
 
 type State = {
   data: Recipe[];
   fetchRecipesLoadingStatus: LoadingStatusType;
-  createRecipeLoadingStatus: LoadingStatusType;
-  deleteRecipeLoadingStatus: LoadingStatusType;
 };
 
 const initialState: State = {
   data: [],
   fetchRecipesLoadingStatus: LoadingStatus.INITIAL,
-  createRecipeLoadingStatus: LoadingStatus.INITIAL,
-  deleteRecipeLoadingStatus: LoadingStatus.INITIAL,
 };
 
-/*TODO: сделать отдельно слайсы для рецепта, рецептов, удаление рецепта, создание рецепта, потому что одна модель - одна операция. И в файле слайса сделать и селектор, и санки, которые относятся к этой сущности */
+export const fetchRecipes = createAsyncThunk<Recipe[], void, { rejectValue: string }>(
+  'recipes/fetchRecipes',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await getRecipesApi();
+    } catch {
+      return rejectWithValue('Не удалось загрузить рецепты');
+    }
+  },
+);
 
 export const recipesSlice = createSlice({
   initialState,
@@ -35,25 +43,19 @@ export const recipesSlice = createSlice({
       .addCase(fetchRecipes.rejected, (state) => {
         state.fetchRecipesLoadingStatus = LoadingStatus.ERROR;
       })
-      .addCase(createRecipe.pending, (state) => {
-        state.createRecipeLoadingStatus = LoadingStatus.LOADING;
-      })
-      .addCase(createRecipe.rejected, (state) => {
-        state.createRecipeLoadingStatus = LoadingStatus.ERROR;
-      })
       .addCase(createRecipe.fulfilled, (state, action) => {
-        state.createRecipeLoadingStatus = LoadingStatus.LOADED;
         state.data.push(action.payload);
       })
-      .addCase(deleteRecipe.pending, (state) => {
-        state.deleteRecipeLoadingStatus = LoadingStatus.LOADING;
-      })
-      .addCase(deleteRecipe.rejected, (state) => {
-        state.deleteRecipeLoadingStatus = LoadingStatus.ERROR;
-      })
       .addCase(deleteRecipe.fulfilled, (state, action) => {
-        state.deleteRecipeLoadingStatus = LoadingStatus.LOADED;
         state.data = state.data.filter((item) => item.id !== action.payload);
       });
   },
 });
+
+export const selectRecipes = (state: RootState) => {
+  return state.recipes.data;
+};
+
+export const selectFetchRecipesLoadingStatus = (state: RootState) => {
+  return state.recipes.fetchRecipesLoadingStatus;
+};

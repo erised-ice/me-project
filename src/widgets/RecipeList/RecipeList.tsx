@@ -1,7 +1,7 @@
 import { ActionIcon, Group, List } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
-import { deleteRecipe } from '@/entities/recipe/model/thunks.ts';
+import { deleteRecipe } from '@/entities/recipe/model/deleteRecipeSlice.ts';
 import type { Recipe } from '@/entities/recipe/model/types.ts';
 import { Link } from '@/shared/components';
 import { getRoute, ROUTE } from '@/shared/constants/routes.ts';
