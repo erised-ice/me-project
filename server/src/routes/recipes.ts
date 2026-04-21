@@ -34,6 +34,29 @@ recipesRouter.get('/', async (_req, res) => {
   res.json(result.rows.map((recipe) => normalizeRecipe(recipe as RecipeRow)));
 });
 
+recipesRouter.get('/:id', async (req, res) => {
+  const recipeId = Number(req.params.id);
+
+  if (Number.isNaN(recipeId)) {
+    return res.status(400).json({
+      message: 'Invalid recipe id',
+    });
+  }
+
+  const result = await pool.query(
+    'SELECT id, name, ingredients, description, author FROM recipes WHERE id = $1',
+    [recipeId],
+  );
+
+  if (result.rowCount === 0) {
+    return res.status(404).json({
+      message: 'Recipe not found',
+    });
+  }
+
+  return res.json(normalizeRecipe(result.rows[0] as RecipeRow));
+});
+
 recipesRouter.post('/', async (req, res) => {
   const { name, ingredients, description, author } = req.body;
 

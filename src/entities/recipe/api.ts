@@ -14,6 +14,16 @@ export const getRecipesApi = async (): Promise<Recipe[]> => {
   return await response.json();
 };
 
+export const getRecipeApi = async (recipeId: number): Promise<Recipe> => {
+  const response = await fetch(`${API_URL}/${recipeId}`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch recipe');
+  }
+
+  return await response.json();
+};
+
 export const createRecipeApi = async (payload: CreateRecipePayload): Promise<Recipe> => {
   const response = await fetch(API_URL, {
     method: 'POST',

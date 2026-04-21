@@ -41,6 +41,5 @@ export const createRecipeSlice = createSlice({
   },
 });
 
-export const selectCreateRecipeLoadingStatus = (state: RootState) => {
-  return state.createRecipe.createRecipeLoadingStatus;
-};
+export const selectCreateRecipeLoadingStatus = (state: RootState) =>
+  state.createRecipe.createRecipeLoadingStatus;

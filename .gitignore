@@ -27,3 +27,4 @@ dist-ssr
 .env.*
 /AGENTS.md
 /docs/code-style.md
+/docs/redux-api-thunks.md

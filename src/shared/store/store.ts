@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { createRecipeSlice } from '@/entities/recipe/model/createRecipeSlice.ts';
 import { deleteRecipeSlice } from '@/entities/recipe/model/deleteRecipeSlice.ts';
+import { recipeSlice } from '@/entities/recipe/model/recipeSlice.ts';
 import { recipesSlice } from '@/entities/recipe/model/recipesSlice.ts';
 
 export const store = configureStore({
   reducer: {
     recipes: recipesSlice.reducer,
+    recipe: recipeSlice.reducer,
     createRecipe: createRecipeSlice.reducer,
     deleteRecipe: deleteRecipeSlice.reducer,
   },
