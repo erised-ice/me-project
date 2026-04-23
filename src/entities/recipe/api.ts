@@ -2,7 +2,7 @@ import type { Recipe } from './model/types.ts';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export type CreateRecipePayload = Omit<Recipe, 'id'>;
+export type CreateRecipePayload = Omit<Recipe, 'id' | 'slug'>;
 
 export const getRecipesApi = async (): Promise<Recipe[]> => {
   const response = await fetch(API_URL);
@@ -14,7 +14,7 @@ export const getRecipesApi = async (): Promise<Recipe[]> => {
   return await response.json();
 };
 
-export const getRecipeApi = async (recipeId: number): Promise<Recipe> => {
+export const getRecipeApi = async (recipeId: string): Promise<Recipe> => {
   const response = await fetch(`${API_URL}/${recipeId}`);
 
   if (!response.ok) {

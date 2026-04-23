@@ -4,21 +4,23 @@ import { IconChefHat } from '@tabler/icons-react';
 import { useParams } from 'react-router-dom';
 import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
 import {
-  fetchRecipes,
-  selectFetchRecipesLoadingStatus,
-  selectRecipes,
-} from '@/entities/recipe/model/recipesSlice.ts';
+  fetchRecipe,
+  selectRecipe,
+  selectRecipeLoadingStatus,
+} from '@/entities/recipe/model/recipeSlice.ts';
 import { LoaderBlock, Text, Title } from '@/shared/components';
 import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
 import { LoadingStatus } from '../shared/constants/constants.ts';
 
 export const RecipePage = () => {
   const dispatch = useAppDispatch();
-  //TODO: Сделать отдельный эндпоинт для отдельного рецепта. Соответственно тут переделать логику тоже.
+  const recipeId = useParams().id;
 
   useEffect(() => {
-    dispatch(fetchRecipes());
-  }, [dispatch]);
+    if (recipeId != null) {
+      dispatch(fetchRecipe(recipeId));
+    }
+  }, [dispatch, recipeId]);
 
   return (
     <Layout>
@@ -28,19 +30,17 @@ export const RecipePage = () => {
 };
 
 const RecipePageComponent = () => {
-  const recipeId = useParams().id;
-  const recipes = useAppSelector(selectRecipes);
-  const fetchRecipesLoadingStatus = useAppSelector(selectFetchRecipesLoadingStatus);
-  const recipe = recipes.find((item) => item.id === Number(recipeId));
+  const recipe = useAppSelector(selectRecipe);
+  const fetchRecipeLoadingStatus = useAppSelector(selectRecipeLoadingStatus);
 
   if (
-    fetchRecipesLoadingStatus === LoadingStatus.INITIAL ||
-    fetchRecipesLoadingStatus === LoadingStatus.LOADING
+    fetchRecipeLoadingStatus === LoadingStatus.INITIAL ||
+    fetchRecipeLoadingStatus === LoadingStatus.LOADING
   ) {
     return <LoaderBlock />;
   }
 
-  if (fetchRecipesLoadingStatus === LoadingStatus.ERROR) {
+  if (fetchRecipeLoadingStatus === LoadingStatus.ERROR) {
     return <>Произошла ошибка загрузки, попробуйте перезагрузить страницу</>;
   }
 

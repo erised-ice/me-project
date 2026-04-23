@@ -36,15 +36,15 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
     <List listStyleType="none" spacing="sm" withPadding fz="lg">
       {/*TODO: убрать логику с особым обращением с первым и вторым рецептом, когда будет другая защита от удаления */}
       <List.Item>
-        <Link to={getRoute(ROUTE.RECIPES, 1)}>{recipes[0].name}</Link>
+        <Link to={getRoute(ROUTE.RECIPES, recipes[0].slug)}>{recipes[0].name}</Link>
       </List.Item>
       <List.Item>
-        <Link to={getRoute(ROUTE.RECIPES, 2)}>{recipes[1].name}</Link>
+        <Link to={getRoute(ROUTE.RECIPES, recipes[1].slug)}>{recipes[1].name}</Link>
       </List.Item>
       {recipes.slice(2).map((item) => (
         <List.Item key={item.id}>
           <Group justify="space-between" gap="sm">
-            <Link to={getRoute(ROUTE.RECIPES, item.id)}>{item.name}</Link>
+            <Link to={getRoute(ROUTE.RECIPES, item.slug)}>{item.name}</Link>
             <ActionIcon
               onClick={() => handleDelete(item.id)}
               color="red"

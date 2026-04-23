@@ -4,6 +4,7 @@ export type Recipe = {
   ingredients: Ingredient[];
   description: string;
   author: string | null;
+  slug: string;
 };
 
 export type Ingredient = {

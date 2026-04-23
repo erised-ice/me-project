@@ -14,7 +14,7 @@ const initialState: State = {
   fetchRecipeLoadingStatus: LoadingStatus.INITIAL,
 };
 
-export const fetchRecipe = createAsyncThunk<Recipe, number, { rejectValue: string }>(
+export const fetchRecipe = createAsyncThunk<Recipe, string, { rejectValue: string }>(
   'recipes/fetchRecipe',
   async (recipeId, { rejectWithValue }) => {
     try {

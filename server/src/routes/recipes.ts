@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import { pool } from '../db';
+import { createSlugBase, createUniqueSlug } from '../slug';
 
 export const recipesRouter = Router();
 
 type RecipeRow = {
   id: number | string;
+  slug: string;
   name: string;
   ingredients: { text: string; tip: string | null }[];
   description: string;
@@ -29,23 +31,19 @@ const isValidIngredient = (value: unknown): boolean => {
 
 recipesRouter.get('/', async (_req, res) => {
   const result = await pool.query(
-    'SELECT id, name, ingredients, description, author FROM recipes ORDER BY id ASC',
+    'SELECT id, slug, name, ingredients, description, author FROM recipes ORDER BY id ASC',
   );
   res.json(result.rows.map((recipe) => normalizeRecipe(recipe as RecipeRow)));
 });
 
-recipesRouter.get('/:id', async (req, res) => {
-  const recipeId = Number(req.params.id);
-
-  if (Number.isNaN(recipeId)) {
-    return res.status(400).json({
-      message: 'Invalid recipe id',
-    });
-  }
+recipesRouter.get('/:slug', async (req, res) => {
+  const recipeSlug = req.params.slug;
 
   const result = await pool.query(
-    'SELECT id, name, ingredients, description, author FROM recipes WHERE id = $1',
-    [recipeId],
+    `SELECT id, slug, name, ingredients, description, author
+     FROM recipes
+     WHERE slug = $1`,
+    [recipeSlug],
   );
 
   if (result.rowCount === 0) {
@@ -75,12 +73,17 @@ recipesRouter.post('/', async (req, res) => {
 
   const normalizedAuthor =
     typeof author === 'string' && author.trim().length > 0 ? author.trim() : null;
+  const baseSlug = createSlugBase(name);
+  const existingSlugs = new Set(
+    (await pool.query<{ slug: string }>('SELECT slug FROM recipes')).rows.map((row) => row.slug),
+  );
+  const slug = createUniqueSlug(baseSlug, existingSlugs);
 
   const result = await pool.query(
-    `INSERT INTO recipes (name, ingredients, description, author)
-   VALUES ($1, $2::jsonb, $3, $4)
-   RETURNING id, name, ingredients, description, author`,
-    [name.trim(), JSON.stringify(ingredients), description.trim(), normalizedAuthor],
+    `INSERT INTO recipes (slug, name, ingredients, description, author)
+   VALUES ($1, $2, $3::jsonb, $4, $5)
+   RETURNING id, slug, name, ingredients, description, author`,
+    [slug, name.trim(), JSON.stringify(ingredients), description.trim(), normalizedAuthor],
   );
 
   return res.status(201).json(normalizeRecipe(result.rows[0] as RecipeRow));
