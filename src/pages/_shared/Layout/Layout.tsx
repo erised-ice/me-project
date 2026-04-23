@@ -1,6 +1,6 @@
-import { Header } from './components/Header/Header.tsx';
-import type { ReactNode } from 'react';
 import { AppShell, Container } from '@mantine/core';
+import type { ReactNode } from 'react';
+import { Header } from './components/Header/Header.tsx';
 
 type LayoutProps = {
   children?: ReactNode;

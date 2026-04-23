@@ -6,6 +6,7 @@ const resetDb = async (): Promise<void> => {
   await pool.query(`
     CREATE TABLE recipes (
       id BIGSERIAL PRIMARY KEY,
+      slug TEXT UNIQUE NOT NULL,
       name TEXT NOT NULL,
       ingredients JSONB NOT NULL,
       description TEXT NOT NULL,
