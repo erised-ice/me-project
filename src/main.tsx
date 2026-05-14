@@ -9,6 +9,8 @@ import { App } from './App.tsx';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 
+import '@/shared/i18n/config.ts';
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
