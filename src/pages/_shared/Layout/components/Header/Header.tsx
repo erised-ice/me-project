@@ -18,7 +18,7 @@ export const Header = () => {
             <Link to={ROUTE.HOME}>{t('navigation.home')}</Link>
           </Button>
           <Button>
-            <Link to={ROUTE.RECIPES}>Рецепты</Link>
+            <Link to={ROUTE.RECIPES}>{t('navigation.recipes')}</Link>
           </Button>
           <LanguageSwitcher />
         </Group>

@@ -1,6 +1,38 @@
 {
+  "common": {
+    "error": "Error",
+    "success": "Done"
+  },
   "navigation": {
-    "home": "Main",
+    "home": "Home",
     "recipes": "Recipes"
+  },
+  "recipeBookPage": {
+    "title": "Recipe Book",
+    "addRecipeTitle": "Add a Recipe",
+    "loadError": "Failed to load recipes. Please try reloading the page."
+  },
+  "recipePage": {
+    "loadError": "Failed to load the recipe. Please try reloading the page.",
+    "notFound": "It seems like you're trying to find a recipe that doesn't exist.",
+    "ingredients": "Ingredients",
+    "cooking": "Cooking",
+    "author": "Added by"
+  },
+  "createRecipeForm": {
+    "nameLabel": "Title",
+    "ingredientsLabel": "Ingredients",
+    "ingredientsDescription": "Put each ingredient on a new line",
+    "instructionsLabel": "Instructions",
+    "authorLabel": "Your name",
+    "authorDescription": "Please introduce yourself =)",
+    "submit": "Add",
+    "successMessage": "Recipe added successfully",
+    "errorMessage": "Failed to save the recipe. Please try again"
+  },
+  "recipeList": {
+    "deleteAriaLabel": "Delete the recipe",
+    "deleteSuccessMessage": "Recipe deleted successfully",
+    "deleteErrorMessage": "Failed to delete the recipe. Please try again."
   }
 }

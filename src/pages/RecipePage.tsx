@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { List, Paper, ThemeIcon } from '@mantine/core';
 import { IconChefHat } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
 import {
@@ -32,6 +33,7 @@ export const RecipePage = () => {
 const RecipePageComponent = () => {
   const recipe = useAppSelector(selectRecipe);
   const fetchRecipeLoadingStatus = useAppSelector(selectRecipeLoadingStatus);
+  const { t } = useTranslation();
 
   if (
     fetchRecipeLoadingStatus === LoadingStatus.INITIAL ||
@@ -41,11 +43,11 @@ const RecipePageComponent = () => {
   }
 
   if (fetchRecipeLoadingStatus === LoadingStatus.ERROR) {
-    return <>Произошла ошибка загрузки, попробуйте перезагрузить страницу</>;
+    return <>{t('recipePage.loadError')}</>;
   }
 
   if (!recipe) {
-    return <>"Кажется вы пытаетесь найти несуществующий рецепт"</>;
+    return <>{t('recipePage.notFound')}</>;
   }
 
   return (
@@ -56,7 +58,7 @@ const RecipePageComponent = () => {
       {recipe.ingredients && (
         <Paper withBorder radius="md" p="md" mb="lg">
           <Title order={3} mb="sm">
-            Ингредиенты
+            {t('recipePage.ingredients')}
           </Title>
           <List
             spacing="sm"
@@ -82,12 +84,12 @@ const RecipePageComponent = () => {
         */}
       <div>
         <Title order={3} mb="xs">
-          Приготовление
+          {t('recipePage.cooking')}
         </Title>
         <Text textMode="accent">{recipe.description}</Text>
         {recipe.author && (
           <Text textMode="note" mb="md">
-            Добавил(а): {recipe.author}
+            {t('recipePage.author')}: {recipe.author}
           </Text>
         )}
       </div>

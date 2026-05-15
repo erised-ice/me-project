@@ -1,6 +1,7 @@
 import { ActionIcon, Group, List } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import { deleteRecipe } from '@/entities/recipe/model/deleteRecipeSlice.ts';
 import type { Recipe } from '@/entities/recipe/model/types.ts';
 import { Link } from '@/shared/components';
@@ -14,20 +15,22 @@ type RecipeListProps = {
 export const RecipeList = ({ recipes }: RecipeListProps) => {
   const dispatch = useAppDispatch();
 
+  const { t } = useTranslation();
+
   const handleDelete = async (id: number) => {
     try {
       await dispatch(deleteRecipe(id)).unwrap();
 
       notifications.show({
         color: 'green',
-        title: 'Готово',
-        message: 'Рецепт успешно удалён',
+        title: t('common.success'),
+        message: t('recipeList.deleteSuccessMessage'),
       });
     } catch {
       notifications.show({
         color: 'red',
-        title: 'Ошибка',
-        message: 'Не удалось удалить рецепт. Попробуйте ещё раз.',
+        title: t('common.error'),
+        message: t('recipeList.deleteErrorMessage'),
       });
     }
   };
@@ -49,7 +52,7 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
               onClick={() => handleDelete(item.id)}
               color="red"
               variant="light"
-              aria-label="Удалить рецепт"
+              aria-label={t('recipeList.deleteAriaLabel')}
             >
               <IconTrash size={18} />
             </ActionIcon>

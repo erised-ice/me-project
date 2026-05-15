@@ -1,6 +1,7 @@
 import { type SubmitEvent, useState } from 'react';
 import { Stack, Textarea, TextInput } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
+import { useTranslation } from 'react-i18next';
 import {
   createRecipe,
   selectCreateRecipeLoadingStatus,
@@ -20,6 +21,8 @@ export const CreateRecipeForm = () => {
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
   const [author, setAuthor] = useState('');
+
+  const { t } = useTranslation();
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,8 +47,8 @@ export const CreateRecipeForm = () => {
 
       notifications.show({
         color: 'green',
-        title: 'Готово',
-        message: 'Рецепт успешно добавлен',
+        title: t('common.success'),
+        message: t('createRecipeForm.successMessage'),
       });
 
       setRecipeName('');
@@ -55,8 +58,8 @@ export const CreateRecipeForm = () => {
     } catch {
       notifications.show({
         color: 'red',
-        title: 'Ошибка',
-        message: 'Не удалось сохранить рецепт. Попробуйте ещё раз.',
+        title: t('common.error'),
+        message: t('createRecipeForm.errorMessage'),
       });
     }
   };
@@ -65,14 +68,14 @@ export const CreateRecipeForm = () => {
     <form onSubmit={handleSubmit}>
       <Stack gap="md">
         <TextInput
-          label="Название"
+          label={t('createRecipeForm.nameLabel')}
           value={recipeName}
           onChange={(e) => setRecipeName(e.currentTarget.value)}
           required
         />
         <Textarea
-          label="Ингредиенты"
-          description="Каждый ингредиент с новой строки"
+          label={t('createRecipeForm.ingredientsLabel')}
+          description={t('createRecipeForm.ingredientsDescription')}
           minRows={6}
           value={ingredients}
           onChange={(e) => setIngredients(e.currentTarget.value)}
@@ -80,7 +83,7 @@ export const CreateRecipeForm = () => {
           required
         />
         <Textarea
-          label="Инструкции"
+          label={t('createRecipeForm.instructionsLabel')}
           minRows={5}
           value={instructions}
           onChange={(e) => setInstructions(e.currentTarget.value)}
@@ -88,13 +91,13 @@ export const CreateRecipeForm = () => {
           resize="vertical"
         />
         <TextInput
-          label="Ваше имя"
-          description="Представьтесь, пожалуйста =)"
+          label={t('createRecipeForm.authorLabel')}
+          description={t('createRecipeForm.authorDescription')}
           value={author}
           onChange={(e) => setAuthor(e.currentTarget.value)}
         />
         <Button type="submit" loading={createRecipeLoadingStatus === LoadingStatus.LOADING}>
-          Добавить
+          {t('createRecipeForm.submit')}
         </Button>
       </Stack>
     </form>
