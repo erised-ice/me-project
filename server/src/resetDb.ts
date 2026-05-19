@@ -10,7 +10,8 @@ const resetDb = async (): Promise<void> => {
       name TEXT NOT NULL,
       ingredients JSONB NOT NULL,
       description TEXT NOT NULL,
-      author TEXT
+      author TEXT,
+      creator_token_hash TEXT
     );
   `);
 

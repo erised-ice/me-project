@@ -1,5 +1,11 @@
 import { Router } from 'express';
 import { pool } from '../db';
+import {
+  generateRecipeCreatorToken,
+  hashRecipeCreatorToken,
+  isAdminTokenValid,
+  isRecipeCreatorTokenValid,
+} from '../recipeTokens';
 import { createSlugBase, createUniqueSlug } from '../slug';
 
 export const recipesRouter = Router();
@@ -78,19 +84,33 @@ recipesRouter.post('/', async (req, res) => {
     (await pool.query<{ slug: string }>('SELECT slug FROM recipes')).rows.map((row) => row.slug),
   );
   const slug = createUniqueSlug(baseSlug, existingSlugs);
+  const creatorToken = generateRecipeCreatorToken();
+  const creatorTokenHash = hashRecipeCreatorToken(creatorToken);
 
   const result = await pool.query(
-    `INSERT INTO recipes (slug, name, ingredients, description, author)
-   VALUES ($1, $2, $3::jsonb, $4, $5)
+    `INSERT INTO recipes (slug, name, ingredients, description, author, creator_token_hash)
+   VALUES ($1, $2, $3::jsonb, $4, $5, $6)
    RETURNING id, slug, name, ingredients, description, author`,
-    [slug, name.trim(), JSON.stringify(ingredients), description.trim(), normalizedAuthor],
+    [
+      slug,
+      name.trim(),
+      JSON.stringify(ingredients),
+      description.trim(),
+      normalizedAuthor,
+      creatorTokenHash,
+    ],
   );
 
-  return res.status(201).json(normalizeRecipe(result.rows[0] as RecipeRow));
+  return res.status(201).json({
+    recipe: normalizeRecipe(result.rows[0] as RecipeRow),
+    creatorToken,
+  });
 });
 
 recipesRouter.delete('/:id', async (req, res) => {
   const recipeId = Number(req.params.id);
+  const creatorToken = req.get('X-Recipe-Creator-Token');
+  const adminToken = req.get('X-Admin-Token');
 
   if (Number.isNaN(recipeId)) {
     return res.status(400).json({
@@ -98,18 +118,34 @@ recipesRouter.delete('/:id', async (req, res) => {
     });
   }
 
-  const result = await pool.query(
-    `DELETE FROM recipes
-     WHERE id = $1
-     RETURNING id`,
+  const recipeResult = await pool.query<{ creator_token_hash: string | null }>(
+    `SELECT creator_token_hash
+     FROM recipes
+     WHERE id = $1`,
     [recipeId],
   );
 
-  if (result.rowCount === 0) {
+  if (recipeResult.rowCount === 0) {
     return res.status(404).json({
       message: 'Recipe not found',
     });
   }
+
+  const canDelete =
+    isAdminTokenValid(adminToken) ||
+    isRecipeCreatorTokenValid(creatorToken, recipeResult.rows[0].creator_token_hash);
+
+  if (!canDelete) {
+    return res.status(403).json({
+      message: 'You do not have permission to delete this recipe',
+    });
+  }
+
+  await pool.query(
+    `DELETE FROM recipes
+     WHERE id = $1`,
+    [recipeId],
+  );
 
   return res.status(204).send();
 });
