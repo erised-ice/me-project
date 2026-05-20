@@ -3,6 +3,15 @@ import type { Recipe } from './model/types.ts';
 const API_URL = import.meta.env.VITE_API_URL;
 
 export type CreateRecipePayload = Omit<Recipe, 'id' | 'slug'>;
+export type DeleteRecipePayload = {
+  recipeId: number;
+  creatorToken: string;
+};
+
+export type CreateRecipeResponse = {
+  recipe: Recipe;
+  creatorToken: string;
+};
 
 export const getRecipesApi = async (): Promise<Recipe[]> => {
   const response = await fetch(API_URL);
@@ -24,7 +33,9 @@ export const getRecipeApi = async (recipeId: string): Promise<Recipe> => {
   return await response.json();
 };
 
-export const createRecipeApi = async (payload: CreateRecipePayload): Promise<Recipe> => {
+export const createRecipeApi = async (
+  payload: CreateRecipePayload,
+): Promise<CreateRecipeResponse> => {
   const response = await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -38,9 +49,15 @@ export const createRecipeApi = async (payload: CreateRecipePayload): Promise<Rec
   return await response.json();
 };
 
-export const deleteRecipeApi = async (recipeId: number): Promise<void> => {
+export const deleteRecipeApi = async ({
+  recipeId,
+  creatorToken,
+}: DeleteRecipePayload): Promise<void> => {
   const response = await fetch(`${API_URL}/${recipeId}`, {
     method: 'DELETE',
+    headers: {
+      'X-Recipe-Creator-Token': creatorToken,
+    },
   });
 
   if (!response.ok) {

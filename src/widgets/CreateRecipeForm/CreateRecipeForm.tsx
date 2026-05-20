@@ -2,6 +2,7 @@ import { type SubmitEvent, useState } from 'react';
 import { Stack, Textarea, TextInput } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
+import { setRecipeToken } from '@/entities/recipe/lib/storage.ts';
 import {
   createRecipe,
   selectCreateRecipeLoadingStatus,
@@ -43,7 +44,8 @@ export const CreateRecipeForm = () => {
     };
 
     try {
-      await dispatch(createRecipe(newRecipe)).unwrap();
+      const createdRecipeResponse = await dispatch(createRecipe(newRecipe)).unwrap();
+      setRecipeToken(createdRecipeResponse.recipe.id, createdRecipeResponse.creatorToken);
 
       notifications.show({
         color: 'green',

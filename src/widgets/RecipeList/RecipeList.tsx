@@ -2,6 +2,7 @@ import { ActionIcon, Group, List } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { getRecipeToken, hasRecipeToken } from '@/entities/recipe/lib/storage.ts';
 import { deleteRecipe } from '@/entities/recipe/model/deleteRecipeSlice.ts';
 import type { Recipe } from '@/entities/recipe/model/types.ts';
 import { Link } from '@/shared/components';
@@ -17,9 +18,14 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
 
   const { t } = useTranslation();
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (recipeId: number, creatorToken: string) => {
     try {
-      await dispatch(deleteRecipe(id)).unwrap();
+      await dispatch(
+        deleteRecipe({
+          recipeId,
+          creatorToken,
+        }),
+      ).unwrap();
 
       notifications.show({
         color: 'green',
@@ -48,20 +54,19 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
         <List.Item key={item.id}>
           <Group justify="space-between" gap="sm">
             <Link to={getRoute(ROUTE.RECIPES, item.slug)}>{item.name}</Link>
-            <ActionIcon
-              onClick={() => handleDelete(item.id)}
-              color="red"
-              variant="light"
-              aria-label={t('recipeList.deleteAriaLabel')}
-            >
-              <IconTrash size={18} />
-            </ActionIcon>
+            {hasRecipeToken(item.id) && (
+              <ActionIcon
+                onClick={() => handleDelete(item.id, getRecipeToken(item.id))}
+                color="red"
+                variant="light"
+                aria-label={t('recipeList.deleteAriaLabel')}
+              >
+                <IconTrash size={18} />
+              </ActionIcon>
+            )}
           </Group>
         </List.Item>
       ))}
-      <li>
-        <Link to={getRoute(ROUTE.RECIPES, 100)}>Тестовый пустой рецепт</Link>
-      </li>
     </List>
   );
 };

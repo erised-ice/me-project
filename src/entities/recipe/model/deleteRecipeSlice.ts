@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { deleteRecipeApi } from '@/entities/recipe/api.ts';
+import { deleteRecipeApi, type DeleteRecipePayload } from '@/entities/recipe/api.ts';
 import { LoadingStatus, type LoadingStatusType } from '@/shared/constants/constants.ts';
 
 type State = {
@@ -10,12 +10,12 @@ const initialState: State = {
   deleteRecipeLoadingStatus: LoadingStatus.INITIAL,
 };
 
-export const deleteRecipe = createAsyncThunk<number, number, { rejectValue: string }>(
+export const deleteRecipe = createAsyncThunk<number, DeleteRecipePayload, { rejectValue: string }>(
   'recipes/deleteRecipe',
   async (payload, { rejectWithValue }) => {
     try {
       await deleteRecipeApi(payload);
-      return payload;
+      return payload.recipeId;
     } catch {
       return rejectWithValue('Не удалось удалить рецепт');
     }
