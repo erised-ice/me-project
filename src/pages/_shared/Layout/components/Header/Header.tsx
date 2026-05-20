@@ -9,6 +9,17 @@ export const Header = () => {
   const { t } = useTranslation();
   const [opened, { open, close }] = useDisclosure(false);
 
+  const menuButtons = (
+    <>
+      <Button component={Link} to={ROUTE.HOME}>
+        {t('navigation.home')}
+      </Button>
+      <Button component={Link} to={ROUTE.RECIPES}>
+        {t('navigation.recipes')}
+      </Button>
+    </>
+  );
+
   return (
     <AppShell.Header>
       {/*
@@ -16,12 +27,7 @@ export const Header = () => {
       */}
       <Container size="lg" px="md" h="100%">
         <Group h="100%" visibleFrom="sm">
-          <Button>
-            <Link to={ROUTE.HOME}>{t('navigation.home')}</Link>
-          </Button>
-          <Button>
-            <Link to={ROUTE.RECIPES}>{t('navigation.recipes')}</Link>
-          </Button>
+          {menuButtons}
           <LanguageSwitcher />
         </Group>
         <Group h="100%" hiddenFrom="sm">
@@ -31,12 +37,7 @@ export const Header = () => {
       <Drawer opened={opened} onClose={close} hiddenFrom="sm">
         <Stack>
           <LanguageSwitcher />
-          <Button>
-            <Link to={ROUTE.HOME}>{t('navigation.home')}</Link>
-          </Button>
-          <Button>
-            <Link to={ROUTE.RECIPES}>{t('navigation.recipes')}</Link>
-          </Button>
+          {menuButtons}
         </Stack>
       </Drawer>
       {/*TODO: Сделать так, чтобы подсвечивались нужные ссылки когда находимся на нужной странице */}
