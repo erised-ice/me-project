@@ -5,7 +5,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 export type CreateRecipePayload = Omit<Recipe, 'id' | 'slug'>;
 export type DeleteRecipePayload = {
   recipeId: number;
-  creatorToken: string;
+  creatorToken?: string;
+  adminToken?: string;
 };
 
 export type CreateRecipeResponse = {
@@ -52,12 +53,21 @@ export const createRecipeApi = async (
 export const deleteRecipeApi = async ({
   recipeId,
   creatorToken,
+  adminToken,
 }: DeleteRecipePayload): Promise<void> => {
+  const headers: HeadersInit = {};
+
+  if (creatorToken) {
+    headers['X-Recipe-Creator-Token'] = creatorToken;
+  }
+
+  if (adminToken) {
+    headers['X-Admin-Token'] = adminToken;
+  }
+
   const response = await fetch(`${API_URL}/${recipeId}`, {
     method: 'DELETE',
-    headers: {
-      'X-Recipe-Creator-Token': creatorToken,
-    },
+    headers,
   });
 
   if (!response.ok) {

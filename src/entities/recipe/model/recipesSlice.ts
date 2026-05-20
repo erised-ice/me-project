@@ -44,7 +44,7 @@ export const recipesSlice = createSlice({
         state.fetchRecipesLoadingStatus = LoadingStatus.ERROR;
       })
       .addCase(createRecipe.fulfilled, (state, action) => {
-        state.data.push(action.payload);
+        state.data.push(action.payload.recipe);
       })
       .addCase(deleteRecipe.fulfilled, (state, action) => {
         state.data = state.data.filter((item) => item.id !== action.payload);

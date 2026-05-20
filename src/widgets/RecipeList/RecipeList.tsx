@@ -2,7 +2,12 @@ import { ActionIcon, Group, List } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { getRecipeToken, hasRecipeToken } from '@/entities/recipe/lib/storage.ts';
+import {
+  getAdminToken,
+  getRecipeToken,
+  hasAdminToken,
+  hasRecipeToken,
+} from '@/entities/recipe/lib/storage.ts';
 import { deleteRecipe } from '@/entities/recipe/model/deleteRecipeSlice.ts';
 import type { Recipe } from '@/entities/recipe/model/types.ts';
 import { Link } from '@/shared/components';
@@ -18,12 +23,17 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
 
   const { t } = useTranslation();
 
-  const handleDelete = async (recipeId: number, creatorToken: string) => {
+  const handleDelete = async (
+    recipeId: number,
+    creatorToken: string | undefined,
+    adminToken: string | undefined,
+  ) => {
     try {
       await dispatch(
         deleteRecipe({
           recipeId,
           creatorToken,
+          adminToken,
         }),
       ).unwrap();
 
@@ -43,20 +53,13 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
 
   return (
     <List listStyleType="none" spacing="sm" withPadding fz="lg">
-      {/*TODO: убрать логику с особым обращением с первым и вторым рецептом, когда будет другая защита от удаления */}
-      <List.Item>
-        <Link to={getRoute(ROUTE.RECIPES, recipes[0].slug)}>{recipes[0].name}</Link>
-      </List.Item>
-      <List.Item>
-        <Link to={getRoute(ROUTE.RECIPES, recipes[1].slug)}>{recipes[1].name}</Link>
-      </List.Item>
-      {recipes.slice(2).map((item) => (
+      {recipes.map((item) => (
         <List.Item key={item.id}>
           <Group justify="space-between" gap="sm">
             <Link to={getRoute(ROUTE.RECIPES, item.slug)}>{item.name}</Link>
-            {hasRecipeToken(item.id) && (
+            {(hasRecipeToken(item.id) || hasAdminToken()) && (
               <ActionIcon
-                onClick={() => handleDelete(item.id, getRecipeToken(item.id))}
+                onClick={() => handleDelete(item.id, getRecipeToken(item.id), getAdminToken())}
                 color="red"
                 variant="light"
                 aria-label={t('recipeList.deleteAriaLabel')}
