@@ -1,5 +1,7 @@
 {
   "common": {
+    "cancel": "Отмена",
+    "delete": "Удалить",
     "error": "Ошибка",
     "success": "Готово"
   },
@@ -32,6 +34,9 @@
   },
   "recipeList": {
     "deleteAriaLabel": "Удалить рецепт",
+    "deleteConfirmTitle": "Удалить рецепт?",
+    "deleteConfirmMessage": "Вы уверены, что хотите удалить рецепт «{{name}}»?",
+    "deleteConfirmFallbackMessage": "Вы уверены, что хотите удалить этот рецепт?",
     "deleteSuccessMessage": "Рецепт успешно удалён",
     "deleteErrorMessage": "Не удалось удалить рецепт. Попробуйте ещё раз."
   }

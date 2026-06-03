@@ -9,9 +9,9 @@ export type ButtonProps = MantineButtonProps & {
   children: ReactNode;
 };
 
-const _Button = ({ children, ...props }: ButtonProps) => {
+const _Button = ({ children, color, ...props }: ButtonProps) => {
   return (
-    <MantineButton {...props} color="cyan" size="lg" radius="md">
+    <MantineButton {...props} color={color ?? 'cyan'} size="lg" radius="md">
       {children}
     </MantineButton>
   );

@@ -11,10 +11,10 @@ export const Header = () => {
 
   const menuButtons = (
     <>
-      <Button component={Link} to={ROUTE.HOME}>
+      <Button component={Link} to={ROUTE.HOME} onClick={close}>
         {t('navigation.home')}
       </Button>
-      <Button component={Link} to={ROUTE.RECIPES}>
+      <Button component={Link} to={ROUTE.RECIPES} onClick={close}>
         {t('navigation.recipes')}
       </Button>
     </>

@@ -1,5 +1,7 @@
 {
   "common": {
+    "cancel": "Cancel",
+    "delete": "Delete",
     "error": "Error",
     "success": "Done"
   },
@@ -32,6 +34,9 @@
   },
   "recipeList": {
     "deleteAriaLabel": "Delete the recipe",
+    "deleteConfirmTitle": "Delete recipe?",
+    "deleteConfirmMessage": "Are you sure you want to delete “{{name}}”?",
+    "deleteConfirmFallbackMessage": "Are you sure you want to delete this recipe?",
     "deleteSuccessMessage": "Recipe deleted successfully",
     "deleteErrorMessage": "Failed to delete the recipe. Please try again."
   }
