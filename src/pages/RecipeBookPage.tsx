@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { Paper } from '@mantine/core';
+import { Modal } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
 import { CreateRecipeForm } from '@/widgets/CreateRecipeForm/CreateRecipeForm.tsx';
@@ -9,12 +10,14 @@ import {
   selectFetchRecipesLoadingStatus,
   selectRecipes,
 } from '@/entities/recipe/model/recipesSlice.ts';
-import { LoaderBlock, Title } from '@/shared/components';
+import { Button, LoaderBlock, Title } from '@/shared/components';
 import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
 import { LoadingStatus } from '../shared/constants/constants.ts';
 
 export const RecipeBookPage = () => {
   const dispatch = useAppDispatch();
+
+  const [isModalOpen, { open, close }] = useDisclosure(false);
 
   const { t } = useTranslation();
 
@@ -30,10 +33,10 @@ export const RecipeBookPage = () => {
       <Title mb="md" order={1}>
         {t('recipeBookPage.title')}
       </Title>
-      <Paper withBorder radius="md" p="md" mb="lg">
-        <Title order={2}>{t('recipeBookPage.addRecipeTitle')}</Title>
+      <Button onClick={() => open()}>{t('recipeBookPage.createNewRecipe')}</Button>
+      <Modal opened={isModalOpen} onClose={close} title={t('recipeBookPage.addRecipeTitle')}>
         <CreateRecipeForm />
-      </Paper>
+      </Modal>
       {(fetchRecipesLoadingStatus === LoadingStatus.INITIAL ||
         fetchRecipesLoadingStatus === LoadingStatus.LOADING) && <LoaderBlock />}
       {fetchRecipesLoadingStatus === LoadingStatus.ERROR && <>{t('recipeBookPage.loadError')}</>}

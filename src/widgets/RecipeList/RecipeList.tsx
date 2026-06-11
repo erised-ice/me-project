@@ -105,11 +105,7 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
             color="red"
             onClick={() => {
               if (recipeToDelete) {
-                handleDelete(
-                  recipeToDelete.id,
-                  getRecipeToken(recipeToDelete.id),
-                  getAdminToken(),
-                );
+                handleDelete(recipeToDelete.id, getRecipeToken(recipeToDelete.id), getAdminToken());
               }
             }}
           >

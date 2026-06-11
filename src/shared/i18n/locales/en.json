@@ -12,7 +12,8 @@
   "recipeBookPage": {
     "title": "Recipe Book",
     "addRecipeTitle": "Add a Recipe",
-    "loadError": "Failed to load recipes. Please try reloading the page."
+    "loadError": "Failed to load recipes. Please try reloading the page.",
+    "createNewRecipe": "Create new recipe"
   },
   "recipePage": {
     "loadError": "Failed to load the recipe. Please try reloading the page.",
