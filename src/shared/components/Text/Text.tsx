@@ -24,8 +24,12 @@ const textStylesByMode = {
   },
 };
 
-export const Text = ({ children, textMode }: TextProps) => {
+export const Text = ({ children, textMode, ...props }: TextProps) => {
   const textStyles = textStylesByMode[textMode];
 
-  return <MantineText {...textStyles}>{children}</MantineText>;
+  return (
+    <MantineText {...textStyles} {...props}>
+      {children}
+    </MantineText>
+  );
 };

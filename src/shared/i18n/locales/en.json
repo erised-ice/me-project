@@ -9,6 +9,15 @@
     "home": "Home",
     "recipes": "Recipes"
   },
+  "mainPage": {
+    "heroTitle": "Recipes from the notebook",
+    "heroDescriptionStart": "A collection of recipes that are easy to use in everyday life and on special occasions. For example:",
+    "heroDescriptionMiddle": "with oven-baked chicken, and also",
+    "riceRecipeLink": "rice",
+    "pancakesRecipeLink": "pancakes with sweetened condensed milk",
+    "heroContributionText": "If you have a favorite recipe, you can add it to the collection too.",
+    "heroButton": "Go to recipes"
+  },
   "recipeBookPage": {
     "title": "Recipe Book",
     "addRecipeTitle": "Add a Recipe",

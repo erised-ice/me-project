@@ -12,11 +12,11 @@ const titleColorByOrder: Partial<Record<TitleOrder, string>> = {
   2: 'cyan.7',
 };
 
-export const Title = ({ children, order }: TitleProps) => {
+export const Title = ({ children, order, c, ...props }: TitleProps) => {
   const titleColor = order ? (titleColorByOrder[order] ?? 'cyan.8') : 'cyan.8';
 
   return (
-    <MantineTitle order={order} c={titleColor}>
+    <MantineTitle {...props} order={order} c={c ?? titleColor}>
       {children}
     </MantineTitle>
   );

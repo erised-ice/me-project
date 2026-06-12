@@ -9,6 +9,15 @@
     "home": "Главная",
     "recipes": "Рецепты"
   },
+  "mainPage": {
+    "heroTitle": "Рецепты из тетрадки",
+    "heroDescriptionStart": "Собираем каталог рецептов, которые легко использовать в повседневной жизни или по особым случаям. Вот например:",
+    "heroDescriptionMiddle": "с курицей, запеченной в духовке, а так же",
+    "riceRecipeLink": "рис",
+    "pancakesRecipeLink": "блинчики со сгущенкой",
+    "heroContributionText": "Если у вас есть любимый рецепт, его тоже можно добавить в каталог.",
+    "heroButton": "Перейти к рецептам"
+  },
   "recipeBookPage": {
     "title": "Книга рецептов",
     "addRecipeTitle": "Добавить рецепт",
