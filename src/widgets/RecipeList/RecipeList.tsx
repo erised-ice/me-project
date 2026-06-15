@@ -12,7 +12,7 @@ import {
 } from '@/entities/recipe/lib/storage.ts';
 import { deleteRecipe } from '@/entities/recipe/model/deleteRecipeSlice.ts';
 import type { Recipe } from '@/entities/recipe/model/types.ts';
-import { Button, Link } from '@/shared/components';
+import {Button, Card, Link} from '@/shared/components';
 import { getRoute, ROUTE } from '@/shared/constants/routes.ts';
 import { useAppDispatch } from '@/shared/store/store.ts';
 
@@ -73,6 +73,7 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
       <List listStyleType="none" spacing="sm" withPadding fz="lg">
         {recipes.map((item) => (
           <List.Item key={item.id}>
+            <Card link={getRoute(ROUTE.RECIPES, item.slug)}/>
             <Group justify="space-between" gap="sm">
               <Link to={getRoute(ROUTE.RECIPES, item.slug)}>{item.name}</Link>
               {(hasRecipeToken(item.id) || hasAdminToken()) && (
