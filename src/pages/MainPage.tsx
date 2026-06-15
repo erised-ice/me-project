@@ -1,15 +1,15 @@
+import { useEffect } from 'react';
 import { Box, Container, Stack } from '@mantine/core';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
 import { RecipeCard } from '@/widgets/RecipeCard';
-import {fetchRecipes, selectRecipes} from '@/entities/recipe/model/recipesSlice.ts';
+import { fetchRecipes, selectRecipes } from '@/entities/recipe/model/recipesSlice.ts';
 import { Button, Link, Text, Title } from '@/shared/components';
-import {useAppDispatch, useAppSelector} from '@/shared/store/store.ts';
+import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
 import { getRoute, ROUTE } from '../shared/constants/routes.ts';
 import styles from './MainPage.module.scss';
-import {useEffect} from "react";
 
 export const MainPage = () => {
   const dispatch = useAppDispatch();

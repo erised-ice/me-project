@@ -11,7 +11,10 @@ type LinkProps = {
 
 export const Link = ({ children, className, isText, variant = 'default', ...props }: LinkProps) => {
   return (
-    <ReactLink className={cx(className, styles.link, isText && styles.text, styles[variant])} {...props}>
+    <ReactLink
+      className={cx(className, styles.link, isText && styles.text, styles[variant])}
+      {...props}
+    >
       {children}
     </ReactLink>
   );
