@@ -1,0 +1,10 @@
+.recipes {
+  display: flex;
+  overflow-x: hidden;
+  gap: 20px;
+  margin: 40px 20px 0;
+}
+
+.card {
+  min-width: 300px;
+}

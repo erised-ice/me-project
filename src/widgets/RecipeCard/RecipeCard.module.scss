@@ -1,0 +1,41 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.imageWrapper {
+  flex: 0 0 120px;
+  height: 120px;
+  min-width: 120px;
+  background: #40acc0;
+}
+
+.content {
+  padding: 16px;
+  width: 100%;
+}
+
+.title {
+  margin-top: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}

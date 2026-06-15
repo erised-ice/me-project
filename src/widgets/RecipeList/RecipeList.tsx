@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { ActionIcon, Group, List, Modal, Text } from '@mantine/core';
+import { Group, Modal, SimpleGrid, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { RecipeCard } from '@/widgets/RecipeCard';
 import {
   getAdminToken,
   getRecipeToken,
@@ -12,7 +12,7 @@ import {
 } from '@/entities/recipe/lib/storage.ts';
 import { deleteRecipe } from '@/entities/recipe/model/deleteRecipeSlice.ts';
 import type { Recipe } from '@/entities/recipe/model/types.ts';
-import {Button, Card, Link} from '@/shared/components';
+import { Button } from '@/shared/components';
 import { getRoute, ROUTE } from '@/shared/constants/routes.ts';
 import { useAppDispatch } from '@/shared/store/store.ts';
 
@@ -70,26 +70,19 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
 
   return (
     <>
-      <List listStyleType="none" spacing="sm" withPadding fz="lg">
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
         {recipes.map((item) => (
-          <List.Item key={item.id}>
-            <Card link={getRoute(ROUTE.RECIPES, item.slug)}/>
-            <Group justify="space-between" gap="sm">
-              <Link to={getRoute(ROUTE.RECIPES, item.slug)}>{item.name}</Link>
-              {(hasRecipeToken(item.id) || hasAdminToken()) && (
-                <ActionIcon
-                  onClick={() => handleOpenDeleteModal(item)}
-                  color="red"
-                  variant="light"
-                  aria-label={t('recipeList.deleteAriaLabel')}
-                >
-                  <IconTrash size={18} />
-                </ActionIcon>
-              )}
-            </Group>
-          </List.Item>
+          <RecipeCard
+            key={item.id}
+            link={getRoute(ROUTE.RECIPES, item.slug)}
+            title={item.name}
+            instruction={item.description}
+            canDelete={hasRecipeToken(item.id) || hasAdminToken()}
+            onDelete={() => handleOpenDeleteModal(item)}
+            deleteAriaLabel={t('recipeList.deleteAriaLabel')}
+          />
         ))}
-      </List>
+      </SimpleGrid>
       <Modal
         opened={isModalOpen}
         onClose={handleCloseDeleteModal}

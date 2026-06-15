@@ -13,7 +13,7 @@ export const Layout = ({ children, withContainer = true }: LayoutProps) => {
       <Header />
       <AppShell.Main>
         {withContainer ? (
-          <Container size="lg" px="md" py="md">
+          <Container size="xl" px="md" py="md">
             {children}
           </Container>
         ) : (

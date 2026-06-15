@@ -33,7 +33,9 @@ export const RecipeBookPage = () => {
       <Title mb="md" order={1}>
         {t('recipeBookPage.title')}
       </Title>
-      <Button onClick={() => open()}>{t('recipeBookPage.createNewRecipe')}</Button>
+      <Button onClick={() => open()} mb="lg">
+        {t('recipeBookPage.createNewRecipe')}
+      </Button>
       <Modal opened={isModalOpen} onClose={close} title={t('recipeBookPage.addRecipeTitle')}>
         <CreateRecipeForm />
       </Modal>

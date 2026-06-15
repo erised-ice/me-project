@@ -25,7 +25,7 @@ export const Header = () => {
       {/*
       Здесь будет навигация, логотип и тому подобное. Он будет одинаковый на всех страницах
       */}
-      <Container size="lg" px="md" h="100%">
+      <Container size="xl" px="md" h="100%">
         <Group h="100%" visibleFrom="sm">
           {menuButtons}
           <LanguageSwitcher />
