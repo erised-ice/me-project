@@ -5,8 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
 import { RecipeCard } from '@/widgets/RecipeCard';
-import { fetchRecipes, selectRecipes } from '@/entities/recipe/model/recipesSlice.ts';
-import { Button, Link, Text, Title } from '@/shared/components';
+import {
+  fetchRecipes,
+  selectFetchRecipesLoadingStatus,
+  selectRecipes,
+} from '@/entities/recipe/model/recipesSlice.ts';
+import { Button, Link, LoaderBlock, Text, Title } from '@/shared/components';
+import { LoadingStatus } from '@/shared/constants/constants.ts';
 import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
 import { getRoute, ROUTE } from '../shared/constants/routes.ts';
 import styles from './MainPage.module.scss';
@@ -15,6 +20,7 @@ export const MainPage = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const recipes = useAppSelector(selectRecipes);
+  const fetchRecipesLoadingStatus = useAppSelector(selectFetchRecipesLoadingStatus);
 
   useEffect(() => {
     dispatch(fetchRecipes());
@@ -48,19 +54,24 @@ export const MainPage = () => {
           </Stack>
         </Container>
       </Box>
-      <section className={cx(styles.recipes)}>
-        {recipes.map((item) => (
-          <RecipeCard
-            className={cx(styles.card)}
-            key={item.id}
-            link={getRoute(ROUTE.RECIPES, item.slug)}
-            title={item.name}
-            instruction={item.description}
-            canDelete={false}
-            deleteAriaLabel={t('recipeList.deleteAriaLabel')}
-          />
-        ))}
-      </section>
+      {(fetchRecipesLoadingStatus === LoadingStatus.INITIAL ||
+        fetchRecipesLoadingStatus === LoadingStatus.LOADING) && <LoaderBlock />}
+      {fetchRecipesLoadingStatus === LoadingStatus.ERROR && <>{t('recipeBookPage.loadError')}</>}
+      {fetchRecipesLoadingStatus === LoadingStatus.LOADED && (
+        <section className={cx(styles.recipes)}>
+          {recipes.slice(0, 4).map((item) => (
+            <RecipeCard
+              className={cx(styles.card)}
+              key={item.id}
+              link={getRoute(ROUTE.RECIPES, item.slug)}
+              title={item.name}
+              instruction={item.description}
+              canDelete={false}
+              deleteAriaLabel={t('recipeList.deleteAriaLabel')}
+            />
+          ))}
+        </section>
+      )}
     </Layout>
   );
 };
