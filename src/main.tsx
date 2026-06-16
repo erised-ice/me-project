@@ -8,6 +8,7 @@ import { store } from '@/shared/store/store.ts';
 import { App } from './App.tsx';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import '@/styles/global.scss';
 
 import '@/shared/i18n/config.ts';
 

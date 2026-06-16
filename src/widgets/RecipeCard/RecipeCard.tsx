@@ -1,7 +1,7 @@
-import { ActionIcon, Paper, Text } from '@mantine/core';
+import { ActionIcon, Text } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import cx from 'classnames';
-import { Link, Title } from '@/shared/components';
+import { Link } from '@/shared/components';
 import styles from './RecipeCard.module.scss';
 
 type CardProps = {
@@ -24,12 +24,12 @@ export const RecipeCard = ({
   className,
 }: CardProps) => {
   return (
-    <Paper radius="md" withBorder className={cx(styles.card, className)}>
-      <Link className={cx(styles.imageWrapper)} to={link}></Link>
+    <Link className={cx(styles.card, className)} to={link}>
+      <div className={cx(styles.imageWrapper)}>
+        <img className={styles.image} src="public/pictures/cheese.png" alt="cheese" />
+      </div>
       <div className={cx(styles.content)}>
-        <Title className={cx(styles.title)} order={3}>
-          {title}
-        </Title>
+        <h3 className={cx(styles.title)}>{title}</h3>
         <Text className={cx(styles.text)}>{instruction}</Text>
       </div>
       {canDelete && (
@@ -43,6 +43,6 @@ export const RecipeCard = ({
           <IconTrash size={18} />
         </ActionIcon>
       )}
-    </Paper>
+    </Link>
   );
 };
