@@ -70,7 +70,7 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
 
   return (
     <>
-      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="40px">
         {recipes.map((item) => (
           <RecipeCard
             key={item.id}

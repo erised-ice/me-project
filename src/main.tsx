@@ -6,8 +6,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { store } from '@/shared/store/store.ts';
 import { App } from './App.tsx';
-import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
+import '@mantine/core/styles.layer.css';
+import '@mantine/notifications/styles.layer.css';
 import '@/styles/global.scss';
 
 import '@/shared/i18n/config.ts';

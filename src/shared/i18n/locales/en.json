@@ -16,7 +16,8 @@
     "riceRecipeLink": "rice",
     "pancakesRecipeLink": "pancakes with sweetened condensed milk",
     "heroContributionText": "If you have a favorite recipe, you can add it to the collection too.",
-    "heroButton": "Go to recipes"
+    "heroButton": "Explore recipes",
+    "introText": "Some recipes happen almost by accident: jotted down in a phone note or scribbled on the back of a receipt with a pen that barely writes. Then friends gather around those dishes, family comes over, and the warmest memories stay."
   },
   "recipeBookPage": {
     "title": "Recipe Book",

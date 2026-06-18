@@ -12,7 +12,7 @@ export const Layout = ({ children, withContainer = true }: LayoutProps) => {
   return (
     <AppShell header={{ height: '100px' }} bg="#f3f4f6">
       <Header />
-      <AppShell.Main mt="40px">
+      <AppShell.Main mt="40px" pb="220px">
         {withContainer ? <Container>{children}</Container> : <>{children}</>}
       </AppShell.Main>
     </AppShell>

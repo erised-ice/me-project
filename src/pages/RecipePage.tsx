@@ -66,7 +66,7 @@ const RecipePageComponent = () => {
             listStyleType="none"
             fz="lg"
             icon={
-              <ThemeIcon color="cyan" variant="light" size={20} radius="xl">
+              <ThemeIcon color="#AFA7CB" variant="light" size={20} radius="xl">
                 <IconChefHat size={14} />
               </ThemeIcon>
             }

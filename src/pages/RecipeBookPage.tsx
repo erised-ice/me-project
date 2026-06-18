@@ -10,7 +10,8 @@ import {
   selectFetchRecipesLoadingStatus,
   selectRecipes,
 } from '@/entities/recipe/model/recipesSlice.ts';
-import { Button, LoaderBlock, Title } from '@/shared/components';
+import { Button, Link, LoaderBlock, Text, Title } from '@/shared/components';
+import { getRoute, ROUTE } from '@/shared/constants/routes.ts';
 import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
 import { LoadingStatus } from '../shared/constants/constants.ts';
 
@@ -30,10 +31,22 @@ export const RecipeBookPage = () => {
 
   return (
     <Layout>
-      <Title mb="md" order={1}>
+      <Title mb="40px" order={1}>
         {t('recipeBookPage.title')}
       </Title>
-      <Button onClick={() => open()} mb="lg">
+      <Text mb="md">
+        {t('mainPage.heroDescriptionStart')}{' '}
+        <Link to={getRoute(ROUTE.RECIPES, 'ris')} isText>
+          {t('mainPage.riceRecipeLink')}
+        </Link>{' '}
+        {t('mainPage.heroDescriptionMiddle')}{' '}
+        <Link to={getRoute(ROUTE.RECIPES, 'bliny')} isText>
+          {t('mainPage.pancakesRecipeLink')}
+        </Link>
+        .
+      </Text>
+      <Text mb="40px">{t('mainPage.heroContributionText')}</Text>
+      <Button mb="80px" onClick={() => open()}>
         {t('recipeBookPage.createNewRecipe')}
       </Button>
       <Modal opened={isModalOpen} onClose={close} title={t('recipeBookPage.addRecipeTitle')}>
