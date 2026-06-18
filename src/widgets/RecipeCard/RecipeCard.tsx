@@ -26,7 +26,7 @@ export const RecipeCard = ({
   return (
     <Link className={cx(styles.card, className)} to={link}>
       <div className={cx(styles.imageWrapper)}>
-        <img className={styles.image} src="public/pictures/cheese.png" alt="cheese" />
+        <img className={styles.image} src="'/pictures/cheese.png" alt="cheese" />
       </div>
       <div className={cx(styles.content)}>
         <h3 className={cx(styles.title)}>{title}</h3>
