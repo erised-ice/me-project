@@ -4,6 +4,7 @@ import {
   createPolymorphicComponent,
 } from '@mantine/core';
 import type { ReactNode } from 'react';
+import styles from './Button.module.scss';
 
 export type ButtonProps = MantineButtonProps & {
   children: ReactNode;
@@ -11,7 +12,7 @@ export type ButtonProps = MantineButtonProps & {
 
 const _Button = ({ children, color, ...props }: ButtonProps) => {
   return (
-    <MantineButton {...props} color={color ?? 'cyan'} size="lg" radius="md">
+    <MantineButton className={styles.button} {...props} color={color ?? '#171718'}>
       {children}
     </MantineButton>
   );

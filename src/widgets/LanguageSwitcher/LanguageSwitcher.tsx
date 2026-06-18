@@ -9,7 +9,7 @@ export const LanguageSwitcher = () => {
       value={i18n.resolvedLanguage}
       onChange={(language) => i18n.changeLanguage(language)}
       data={[
-        { label: 'RU', value: 'ru' },
+        { label: 'РУС', value: 'ru' },
         { label: 'EN', value: 'en' },
       ]}
       ml="auto"

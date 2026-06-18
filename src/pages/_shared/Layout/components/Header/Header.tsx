@@ -1,9 +1,10 @@
-import { AppShell, Burger, Container, Drawer, Group, Stack } from '@mantine/core';
+import { AppShell, Burger, Drawer, Group, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '@/widgets/LanguageSwitcher/LanguageSwitcher.tsx';
-import { Button, Link } from '@/shared/components';
+import { Container, Link } from '@/shared/components';
 import { ROUTE } from '@/shared/constants/routes.ts';
+import styles from './Header.module.scss';
 
 export const Header = () => {
   const { t } = useTranslation();
@@ -11,22 +12,19 @@ export const Header = () => {
 
   const menuButtons = (
     <>
-      <Button component={Link} to={ROUTE.HOME} onClick={close}>
+      <Link className={styles.button} to={ROUTE.HOME} onClick={close}>
         {t('navigation.home')}
-      </Button>
-      <Button component={Link} to={ROUTE.RECIPES} onClick={close}>
+      </Link>
+      <Link className={styles.button} to={ROUTE.RECIPES} onClick={close}>
         {t('navigation.recipes')}
-      </Button>
+      </Link>
     </>
   );
 
   return (
-    <AppShell.Header>
-      {/*
-      Здесь будет навигация, логотип и тому подобное. Он будет одинаковый на всех страницах
-      */}
-      <Container size="xl" px="md" h="100%">
-        <Group h="100%" visibleFrom="sm">
+    <AppShell.Header className={styles.header} bg="#F5F5F5">
+      <Container className={styles.inner}>
+        <Group h="100%" visibleFrom="sm" gap="50px" w="100%">
           {menuButtons}
           <LanguageSwitcher />
         </Group>

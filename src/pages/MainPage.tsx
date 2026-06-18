@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Box, Container, Stack } from '@mantine/core';
+import { Box, Stack } from '@mantine/core';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
@@ -10,7 +10,7 @@ import {
   selectFetchRecipesLoadingStatus,
   selectRecipes,
 } from '@/entities/recipe/model/recipesSlice.ts';
-import { Button, Link, LoaderBlock, Text, Title } from '@/shared/components';
+import { Button, Container, Link, LoaderBlock, Text, Title } from '@/shared/components';
 import { LoadingStatus } from '@/shared/constants/constants.ts';
 import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
 import { getRoute, ROUTE } from '../shared/constants/routes.ts';
@@ -29,7 +29,7 @@ export const MainPage = () => {
   return (
     <Layout withContainer={false}>
       <Box bg="cyan.6" py={{ base: 56, sm: 120 }}>
-        <Container size="xl" px="md">
+        <Container>
           <Title order={1} c="cyan.0" mb="lg">
             {t('mainPage.heroTitle')}
           </Title>

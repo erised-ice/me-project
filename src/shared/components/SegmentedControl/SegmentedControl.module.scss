@@ -1,0 +1,8 @@
+.label {
+  font-family: 'Lack', sans-serif;
+  color: rgba(23, 23, 24, 0.3);
+
+  &[data-active] {
+    color: #fff !important;
+  }
+}

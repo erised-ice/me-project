@@ -1,5 +1,6 @@
-import { AppShell, Container } from '@mantine/core';
+import { AppShell } from '@mantine/core';
 import type { ReactNode } from 'react';
+import { Container } from '@/shared/components';
 import { Header } from './components/Header/Header.tsx';
 
 type LayoutProps = {
@@ -9,16 +10,10 @@ type LayoutProps = {
 
 export const Layout = ({ children, withContainer = true }: LayoutProps) => {
   return (
-    <AppShell header={{ height: '80px' }} bg="#f3f4f6">
+    <AppShell header={{ height: '100px' }} bg="#f3f4f6">
       <Header />
-      <AppShell.Main>
-        {withContainer ? (
-          <Container size="xl" px="md" py="md">
-            {children}
-          </Container>
-        ) : (
-          <>{children}</>
-        )}
+      <AppShell.Main mt="40px">
+        {withContainer ? <Container>{children}</Container> : <>{children}</>}
       </AppShell.Main>
     </AppShell>
   );
