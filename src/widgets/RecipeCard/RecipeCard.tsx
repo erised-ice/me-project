@@ -2,6 +2,7 @@ import { ActionIcon, Text } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import cx from 'classnames';
 import { Link } from '@/shared/components';
+import { getRandomNumber } from '@/shared/utils.ts';
 import styles from './RecipeCard.module.scss';
 
 type CardProps = {
@@ -14,6 +15,8 @@ type CardProps = {
   className?: string;
 };
 
+const recipeCardPictureAmount = 6;
+
 export const RecipeCard = ({
   link,
   title,
@@ -23,10 +26,15 @@ export const RecipeCard = ({
   deleteAriaLabel,
   className,
 }: CardProps) => {
+  const recipeCardPictureNumber = getRandomNumber(1, recipeCardPictureAmount);
+  const safeRecipeCardPictureNumber =
+    recipeCardPictureNumber === 'error' ? 1 : recipeCardPictureNumber;
+  const recipeCardPictureAddress = `/pictures/category-${safeRecipeCardPictureNumber}.png`;
+
   return (
     <Link className={cx(styles.card, className)} to={link}>
       <div className={cx(styles.imageWrapper)}>
-        <img className={styles.image} src="/pictures/cheese.png" alt="cheese" />
+        <img className={styles.image} src={recipeCardPictureAddress} alt="cheese" />
       </div>
       <div className={cx(styles.content)}>
         <h3 className={cx(styles.title)}>{title}</h3>
