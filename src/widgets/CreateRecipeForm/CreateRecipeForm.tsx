@@ -81,8 +81,8 @@ export const CreateRecipeForm = () => {
           minRows={6}
           value={ingredients}
           onChange={(e) => setIngredients(e.currentTarget.value)}
-          resize="vertical"
           required
+          autosize
         />
         <Textarea
           label={t('createRecipeForm.instructionsLabel')}
@@ -90,7 +90,7 @@ export const CreateRecipeForm = () => {
           value={instructions}
           onChange={(e) => setInstructions(e.currentTarget.value)}
           required
-          resize="vertical"
+          autosize
         />
         <TextInput
           label={t('createRecipeForm.authorLabel')}
