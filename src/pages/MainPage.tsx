@@ -39,15 +39,15 @@ export const MainPage = () => {
 
       <Text className={styles.text}>{t('mainPage.introText')}</Text>
       <section>
-        <Title order={2} mb={40} badgeText={'coming soon'}>
-          Categories
+        <Title order={2} mb={40} badgeText={t('mainPage.comingSoonBadge')}>
+          {t('mainPage.categoriesTitle')}
         </Title>
 
         <div className={styles.categoriesWrapper}>
           {categories.map((category, index) => (
             <CategoryCard
-              title={category}
-              key={index}
+              title={t(`mainPage.categories.${category}`)}
+              key={category}
               img={`/pictures/category-${index + 1}.png`}
               gradientNumber={index + 1}
             />
@@ -56,7 +56,7 @@ export const MainPage = () => {
       </section>
       <section>
         <Title order={2} mb={40}>
-          Popular recipes
+          {t('mainPage.popularRecipesTitle')}
         </Title>
         {(fetchRecipesLoadingStatus === LoadingStatus.INITIAL ||
           fetchRecipesLoadingStatus === LoadingStatus.LOADING) && <LoaderBlock />}

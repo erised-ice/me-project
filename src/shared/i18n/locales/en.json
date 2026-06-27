@@ -17,7 +17,18 @@
     "pancakesRecipeLink": "pancakes with sweetened condensed milk",
     "heroContributionText": "If you have a favorite recipe, you can add it to the collection too.",
     "heroButton": "Explore recipes",
-    "introText": "Some recipes happen almost by accident: jotted down in a phone note or scribbled on the back of a receipt with a pen that barely writes. Then friends gather around those dishes, family comes over, and the warmest memories stay."
+    "introText": "Some recipes happen almost by accident: jotted down in a phone note or scribbled on the back of a receipt with a pen that barely writes. Then friends gather around those dishes, family comes over, and the warmest memories stay.",
+    "categoriesTitle": "Categories",
+    "comingSoonBadge": "coming soon",
+    "popularRecipesTitle": "Popular recipes",
+    "categories": {
+      "soups": "Soups",
+      "mains": "Mains",
+      "snacks": "Snacks",
+      "sweets": "Sweets",
+      "lunch": "Lunch",
+      "pastry": "Pastry"
+    }
   },
   "recipeBookPage": {
     "title": "Recipe Book",
