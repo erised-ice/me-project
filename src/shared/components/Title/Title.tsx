@@ -6,9 +6,10 @@ import styles from './Title.module.scss';
 type TitleProps = MantineTitleProps & {
   children: ReactNode;
   className?: string;
+  badgeText?: string;
 };
 
-export const Title = ({ children, className, order = 1, ...props }: TitleProps) => {
+export const Title = ({ children, className, order = 1, badgeText, ...props }: TitleProps) => {
   const titleClassByOrder = {
     1: styles.h1,
     2: styles.h2,
@@ -25,6 +26,9 @@ export const Title = ({ children, className, order = 1, ...props }: TitleProps) 
       {...props}
     >
       {children}
+      {badgeText && <sup className={styles.badge}>{badgeText}</sup>}
     </MantineTitle>
   );
 };
+
+/* TODO: Rethink badge solution to fit all screen sizes */
