@@ -4,6 +4,7 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
+import { CategoryCard } from '@/widgets/CategoryCard';
 import { RecipeCard } from '@/widgets/RecipeCard';
 import {
   fetchRecipes,
@@ -12,6 +13,7 @@ import {
 } from '@/entities/recipe/model/recipesSlice.ts';
 import { Button, LoaderBlock, Text, Title } from '@/shared/components';
 import { LoadingStatus } from '@/shared/constants/constants.ts';
+import { categories } from '@/shared/data/categories.ts';
 import { useAppDispatch, useAppSelector } from '@/shared/store/store.ts';
 import { getRoute, ROUTE } from '../shared/constants/routes.ts';
 import styles from './MainPage.module.scss';
@@ -34,25 +36,47 @@ export const MainPage = () => {
           {t('mainPage.heroButton')}
         </Button>
       </section>
+
       <Text className={styles.text}>{t('mainPage.introText')}</Text>
-      {(fetchRecipesLoadingStatus === LoadingStatus.INITIAL ||
-        fetchRecipesLoadingStatus === LoadingStatus.LOADING) && <LoaderBlock />}
-      {fetchRecipesLoadingStatus === LoadingStatus.ERROR && <>{t('recipeBookPage.loadError')}</>}
-      {fetchRecipesLoadingStatus === LoadingStatus.LOADED && (
-        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing={{ base: '20px', md: '50px' }}>
-          {recipes.slice(0, 6).map((item) => (
-            <RecipeCard
-              className={cx(styles.card)}
-              key={item.id}
-              link={getRoute(ROUTE.RECIPES, item.slug)}
-              title={item.name}
-              instruction={item.description}
-              canDelete={false}
-              deleteAriaLabel={t('recipeList.deleteAriaLabel')}
+      <section>
+        <Title order={2} mb={40} badgeText={'coming soon'}>
+          Categories
+        </Title>
+
+        <div className={styles.categoriesWrapper}>
+          {categories.map((category, index) => (
+            <CategoryCard
+              title={category}
+              key={index}
+              img={`/pictures/category-${index + 1}.png`}
+              gradientNumber={index + 1}
             />
           ))}
-        </SimpleGrid>
-      )}
+        </div>
+      </section>
+      <section>
+        <Title order={2} mb={40}>
+          Popular recipes
+        </Title>
+        {(fetchRecipesLoadingStatus === LoadingStatus.INITIAL ||
+          fetchRecipesLoadingStatus === LoadingStatus.LOADING) && <LoaderBlock />}
+        {fetchRecipesLoadingStatus === LoadingStatus.ERROR && <>{t('recipeBookPage.loadError')}</>}
+        {fetchRecipesLoadingStatus === LoadingStatus.LOADED && (
+          <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing={{ base: '20px', md: '50px' }}>
+            {recipes.slice(0, 6).map((item) => (
+              <RecipeCard
+                className={cx(styles.card)}
+                key={item.id}
+                link={getRoute(ROUTE.RECIPES, item.slug)}
+                title={item.name}
+                instruction={item.description}
+                canDelete={false}
+                deleteAriaLabel={t('recipeList.deleteAriaLabel')}
+              />
+            ))}
+          </SimpleGrid>
+        )}
+      </section>
     </Layout>
   );
 };

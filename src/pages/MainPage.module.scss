@@ -24,6 +24,14 @@
   margin-bottom: 100px;
 }
 
+.categoriesWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(162px, 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+  justify-items: center;
+}
+
 .recipes {
   /*display: flex;
   flex-wrap: wrap;
