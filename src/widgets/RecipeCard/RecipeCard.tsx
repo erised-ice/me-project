@@ -32,10 +32,10 @@ export const RecipeCard = ({
   const recipeCardPictureAddress = `/pictures/category-${safeRecipeCardPictureNumber}.png`;
 
   return (
-    <Link className={cx(styles.card, className)} to={link}>
-      <div className={cx(styles.imageWrapper)}>
+    <div className={cx(styles.card, className)}>
+      <Link className={cx(styles.imageWrapper)} to={link}>
         <img className={styles.image} src={recipeCardPictureAddress} alt="cheese" />
-      </div>
+      </Link>
       <div className={cx(styles.content)}>
         <h3 className={cx(styles.title)}>{title}</h3>
         <Text className={cx(styles.text)}>{instruction}</Text>
@@ -51,6 +51,6 @@ export const RecipeCard = ({
           <IconTrash size={18} />
         </ActionIcon>
       )}
-    </Link>
+    </div>
   );
 };
