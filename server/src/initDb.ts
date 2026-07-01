@@ -10,12 +10,14 @@ const initDb = async (): Promise<void> => {
       ingredients JSONB NOT NULL,
       description TEXT NOT NULL,
       author TEXT,
+      category TEXT,
       creator_token_hash TEXT
     );
   `);
 
   await pool.query('ALTER TABLE recipes ADD COLUMN IF NOT EXISTS slug TEXT');
   await pool.query('ALTER TABLE recipes ADD COLUMN IF NOT EXISTS creator_token_hash TEXT');
+  await pool.query('ALTER TABLE recipes ADD COLUMN IF NOT EXISTS category TEXT');
 
   const recipesWithoutSlug = await pool.query<{ id: string; name: string }>(
     `SELECT id, name

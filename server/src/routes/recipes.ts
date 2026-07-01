@@ -17,12 +17,22 @@ type RecipeRow = {
   ingredients: { text: string; tip: string | null }[];
   description: string;
   author: string | null;
+  category: RecipeCategory | null;
 };
+
+type RecipeCategory = 'soups' | 'mains' | 'snacks' | 'sweets' | 'lunch' | 'pastry';
+
+const recipeCategories = new Set<string>(['soups', 'mains', 'snacks', 'sweets', 'lunch', 'pastry']);
 
 const normalizeRecipe = (recipe: RecipeRow) => ({
   ...recipe,
   id: Number(recipe.id),
 });
+
+const isValidRecipeCategory = (value: unknown): boolean =>
+  value === undefined ||
+  value === null ||
+  (typeof value === 'string' && recipeCategories.has(value));
 
 const isValidIngredient = (value: unknown): boolean => {
   if (typeof value !== 'object' || value === null) return false;
@@ -37,7 +47,7 @@ const isValidIngredient = (value: unknown): boolean => {
 
 recipesRouter.get('/', async (_req, res) => {
   const result = await pool.query(
-    'SELECT id, slug, name, ingredients, description, author FROM recipes ORDER BY id ASC',
+    'SELECT id, slug, name, ingredients, description, author, category FROM recipes ORDER BY id ASC',
   );
   res.json(result.rows.map((recipe) => normalizeRecipe(recipe as RecipeRow)));
 });
@@ -46,7 +56,7 @@ recipesRouter.get('/:slug', async (req, res) => {
   const recipeSlug = req.params.slug;
 
   const result = await pool.query(
-    `SELECT id, slug, name, ingredients, description, author
+    `SELECT id, slug, name, ingredients, description, author, category
      FROM recipes
      WHERE slug = $1`,
     [recipeSlug],
@@ -62,7 +72,7 @@ recipesRouter.get('/:slug', async (req, res) => {
 });
 
 recipesRouter.post('/', async (req, res) => {
-  const { name, ingredients, description, author } = req.body;
+  const { name, ingredients, description, author, category } = req.body;
 
   if (
     typeof name !== 'string' ||
@@ -70,7 +80,8 @@ recipesRouter.post('/', async (req, res) => {
     !Array.isArray(ingredients) ||
     !ingredients.every(isValidIngredient) ||
     typeof description !== 'string' ||
-    (author !== undefined && author !== null && typeof author !== 'string')
+    (author !== undefined && author !== null && typeof author !== 'string') ||
+    !isValidRecipeCategory(category)
   ) {
     return res.status(400).json({
       message: 'Invalid recipe payload',
@@ -79,6 +90,7 @@ recipesRouter.post('/', async (req, res) => {
 
   const normalizedAuthor =
     typeof author === 'string' && author.trim().length > 0 ? author.trim() : null;
+  const normalizedCategory = typeof category === 'string' ? category : null;
   const baseSlug = createSlugBase(name);
   const existingSlugs = new Set(
     (await pool.query<{ slug: string }>('SELECT slug FROM recipes')).rows.map((row) => row.slug),
@@ -88,15 +100,16 @@ recipesRouter.post('/', async (req, res) => {
   const creatorTokenHash = hashRecipeCreatorToken(creatorToken);
 
   const result = await pool.query(
-    `INSERT INTO recipes (slug, name, ingredients, description, author, creator_token_hash)
-   VALUES ($1, $2, $3::jsonb, $4, $5, $6)
-   RETURNING id, slug, name, ingredients, description, author`,
+    `INSERT INTO recipes (slug, name, ingredients, description, author, category, creator_token_hash)
+   VALUES ($1, $2, $3::jsonb, $4, $5, $6, $7)
+   RETURNING id, slug, name, ingredients, description, author, category`,
     [
       slug,
       name.trim(),
       JSON.stringify(ingredients),
       description.trim(),
       normalizedAuthor,
+      normalizedCategory,
       creatorTokenHash,
     ],
   );

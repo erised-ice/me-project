@@ -1,6 +1,7 @@
-import { ActionIcon, Text } from '@mantine/core';
-import { IconTrash } from '@tabler/icons-react';
+import { ActionIcon } from '@mantine/core';
+import { IconStopwatch, IconToolsKitchen2, IconTrash } from '@tabler/icons-react';
 import cx from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { Link } from '@/shared/components';
 import { getRandomNumber } from '@/shared/utils.ts';
 import styles from './RecipeCard.module.scss';
@@ -20,12 +21,13 @@ const recipeCardPictureAmount = 6;
 export const RecipeCard = ({
   link,
   title,
-  instruction,
   canDelete,
   onDelete,
   deleteAriaLabel,
   className,
 }: CardProps) => {
+  const { t } = useTranslation();
+
   const recipeCardPictureNumber = getRandomNumber(1, recipeCardPictureAmount);
   const safeRecipeCardPictureNumber =
     recipeCardPictureNumber === 'error' ? 1 : recipeCardPictureNumber;
@@ -38,19 +40,25 @@ export const RecipeCard = ({
       </Link>
       <div className={cx(styles.content)}>
         <h3 className={cx(styles.title)}>{title}</h3>
-        <Text className={cx(styles.text)}>{instruction}</Text>
+
+        {canDelete && (
+          <ActionIcon
+            className={cx(styles.button)}
+            onClick={onDelete}
+            color="red"
+            variant="light"
+            aria-label={deleteAriaLabel}
+          >
+            <IconTrash size={18} />
+          </ActionIcon>
+        )}
+        <div className={styles.tips}>
+          <IconStopwatch />
+          <span className={styles.tipText}>time</span>
+          <IconToolsKitchen2 />
+          <span className={styles.tipText}>{t(`mainPage.categories.other`)}</span>
+        </div>
       </div>
-      {canDelete && (
-        <ActionIcon
-          className={cx(styles.button)}
-          onClick={onDelete}
-          color="red"
-          variant="light"
-          aria-label={deleteAriaLabel}
-        >
-          <IconTrash size={18} />
-        </ActionIcon>
-      )}
     </div>
   );
 };

@@ -10,9 +10,9 @@ const seed = async (): Promise<void> => {
     const slug = createUniqueSlug(createSlugBase(recipe.name), existingSlugs);
 
     await pool.query(
-      `INSERT INTO recipes (slug, name, ingredients, description, author)
-       VALUES ($1, $2, $3::jsonb, $4, $5)`,
-      [slug, recipe.name, JSON.stringify(recipe.ingredients), recipe.description, author],
+      `INSERT INTO recipes (slug, name, ingredients, description, author, category)
+       VALUES ($1, $2, $3::jsonb, $4, $5, $6)`,
+      [slug, recipe.name, JSON.stringify(recipe.ingredients), recipe.description, author, null],
     );
   }
 
