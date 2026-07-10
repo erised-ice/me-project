@@ -46,6 +46,8 @@
   },
   "createRecipeForm": {
     "nameLabel": "Title",
+    "categoryLabel": "Recipe category",
+    "categoryPlaceholder": "Choose a category",
     "ingredientsLabel": "Ingredients",
     "ingredientsDescription": "Put each ingredient on a new line",
     "instructionsLabel": "Instructions",

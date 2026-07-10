@@ -69,6 +69,7 @@ export const MainPage = () => {
                 key={item.id}
                 link={getRoute(ROUTE.RECIPES, item.slug)}
                 title={item.name}
+                category={item.category}
                 instruction={item.description}
                 canDelete={false}
                 deleteAriaLabel={t('recipeList.deleteAriaLabel')}

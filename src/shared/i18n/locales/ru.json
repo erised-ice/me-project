@@ -46,6 +46,8 @@
   },
   "createRecipeForm": {
     "nameLabel": "Название",
+    "categoryLabel": "Категория рецепта",
+    "categoryPlaceholder": "Выберите категорию",
     "ingredientsLabel": "Ингредиенты",
     "ingredientsDescription": "Каждый ингредиент с новой строки",
     "instructionsLabel": "Инструкции",

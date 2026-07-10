@@ -5,6 +5,7 @@ export type Recipe = {
   description: string;
   author: string | null;
   slug: string;
+  category: string | null;
 };
 
 export type Ingredient = {

@@ -80,6 +80,7 @@ export const RecipeList = ({ recipes }: RecipeListProps) => {
             canDelete={hasRecipeToken(item.id) || hasAdminToken()}
             onDelete={() => handleOpenDeleteModal(item)}
             deleteAriaLabel={t('recipeList.deleteAriaLabel')}
+            category={item.category}
           />
         ))}
       </SimpleGrid>

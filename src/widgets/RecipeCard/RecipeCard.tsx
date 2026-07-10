@@ -14,6 +14,7 @@ type CardProps = {
   onDelete?: () => void;
   deleteAriaLabel: string;
   className?: string;
+  category?: string | null;
 };
 
 const recipeCardPictureAmount = 6;
@@ -25,6 +26,7 @@ export const RecipeCard = ({
   onDelete,
   deleteAriaLabel,
   className,
+  category,
 }: CardProps) => {
   const { t } = useTranslation();
 
@@ -56,7 +58,9 @@ export const RecipeCard = ({
           <IconStopwatch />
           <span className={styles.tipText}>time</span>
           <IconToolsKitchen2 />
-          <span className={styles.tipText}>{t(`mainPage.categories.other`)}</span>
+          <span className={styles.tipText}>
+            {category ? t(`mainPage.categories.${category}`) : t(`mainPage.categories.other`)}
+          </span>
         </div>
       </div>
     </div>
