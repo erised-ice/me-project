@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
-import { SimpleGrid } from '@mantine/core';
+import { Modal, SimpleGrid } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Layout } from '@/pages/_shared/Layout/Layout.tsx';
 import { CategoryCard } from '@/widgets/CategoryCard';
+import { CreateRecipeForm } from '@/widgets/CreateRecipeForm/CreateRecipeForm.tsx';
 import { RecipeCard } from '@/widgets/RecipeCard';
 import {
   fetchRecipes,
@@ -23,6 +25,7 @@ export const MainPage = () => {
   const { t } = useTranslation();
   const recipes = useAppSelector(selectRecipes);
   const fetchRecipesLoadingStatus = useAppSelector(selectFetchRecipesLoadingStatus);
+  const [isModalOpen, { open, close }] = useDisclosure(false);
 
   useEffect(() => {
     dispatch(fetchRecipes());
@@ -77,6 +80,12 @@ export const MainPage = () => {
             ))}
           </SimpleGrid>
         )}
+        <Button mt="80px" onClick={() => open()}>
+          {t('recipeBookPage.createNewRecipe')}
+        </Button>
+        <Modal opened={isModalOpen} onClose={close} title={t('recipeBookPage.addRecipeTitle')}>
+          <CreateRecipeForm />
+        </Modal>
       </section>
     </Layout>
   );
